@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 use App\Models\Product; // Import the Product model
+use App\Models\ProductBarcode; // Import the Product model
 use App\Models\Batch; // Import the Product model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
+use Picqer\Barcode\BarcodeGeneratorPNG; // For PNG output
 
 
 class ProductController extends Controller
@@ -114,14 +116,32 @@ class ProductController extends Controller
             'Batch_number' => $batchNumber,
         ]);
     
+        // Generate barcodes
+        for ($i = 0; $i < $product->Stock; $i++) {
+            $barcodeNumber = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT); // Generate a random 6-digit number
+    
+            // Create barcode image using Picqer
+            $barcodeGenerator = new \Picqer\Barcode\BarcodeGeneratorPNG();
+            $barcodeImage = $barcodeGenerator->getBarcode($barcodeNumber, $barcodeGenerator::TYPE_CODE_128);
+    
+            // Create and save the barcode entry
+            ProductBarcode::create([
+                'product_sku' => $product->SKU,
+                'barcode_number' => $barcodeNumber,
+                'is_used' => 0, // Default to not used
+                'received_product_id' => null, // Default to null
+                'batch_number' => $batchNumber,
+                'barcode_image' => $barcodeImage, // Save the barcode image
+            ]);
+        }
+    
         // Update the product to include the batch number
         $product->batches = json_encode([['Batch_number' => $batchNumber]]);
         $product->Batch_number = $batchNumber; // Add this line
         $product->save();
     
         return redirect('/')->with('success', 'Product added successfully!');
-    }
-    
+    }    
     
     /**
      * Display the specified resource.
