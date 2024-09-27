@@ -7,13 +7,13 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         html, body {
-            height: 100%; /* Full height */
-            margin: 0; /* Remove default margin */
+            height: 100%;
+            margin: 0;
         }
 
         .navbar-toggler {
-            border: none; /* Remove default border */
-            outline: none; /* Remove outline on focus */
+            border: none;
+            outline: none;
         }
 
         .navbar-toggler-icon {
@@ -23,25 +23,24 @@
             align-items: center;
             width: 30px;
             height: 30px;
-            transition: opacity 0.3s ease; /* Smooth transition */
+            transition: opacity 0.3s ease;
         }
 
         .navbar-toggler-icon span {
             display: block;
             width: 100%;
             height: 4px;
-            background-color: white; /* Change to white */
-            border: 1px solid white; /* Add border to each bar */
-            margin: 2px 0; /* Space between bars */
+            background-color: white;
+            border: 1px solid white;
+            margin: 2px 0;
             transition: all 0.3s ease;
         }
 
-        /* Transform the burger into an X */
         .navbar-toggler.collapsed .bar1 {
             transform: rotate(0);
         }
         .navbar-toggler.collapsed .bar2 {
-            opacity: 1; /* Show middle bar when collapsed */
+            opacity: 1;
         }
         .navbar-toggler.collapsed .bar3 {
             transform: rotate(0);
@@ -51,27 +50,26 @@
             transform: rotate(45deg) translate(5px, 5px);
         }
         .navbar-toggler:not(.collapsed) .bar2 {
-            opacity: 0; /* Hide middle bar when active */
+            opacity: 0;
         }
         .navbar-toggler:not(.collapsed) .bar3 {
             transform: rotate(-45deg) translate(5px, -5px);
         }
 
-        /* Remove outline on button focus */
         .navbar-toggler:focus {
-            outline: none; /* Remove focus outline */
+            outline: none;
         }
 
         .content {
-            min-height: calc(100% - 56px); /* Adjust based on navbar height */
-            padding: 20px; /* Add some padding */
+            min-height: calc(100% - 56px);
+            padding: 20px;
         }
     </style>
     @yield('styles')
 </head>
 <body>
     <nav class="navbar navbar-expand-lg" style="background-color: #004d00;">
-        <a class="navbar-brand text-light" href="/">MyApp</a>
+        <a class="navbar-brand text-light" href="/">Ukay Supplier Consign Admin</a>
         <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <div class="navbar-toggler-icon">
                 <span class="bar1"></span>
@@ -81,9 +79,20 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
-                <li class="nav-item active">
-                    <a class="nav-link text-light" href="/">Home</a>
-                </li>
+                @if (Auth::check()) <!-- Check if the user is logged in -->
+                    <li class="nav-item active">
+                        <a class="nav-link text-light" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link text-light" href="/products/create">Add Product</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link text-light" href="/orders">View Orders</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link text-light" href="/received-products">View Received Products</a>
+                    </li>
+                @endif
             </ul>
         </div>
     </nav>

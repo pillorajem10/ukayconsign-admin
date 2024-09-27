@@ -5,6 +5,7 @@ use App\Models\Product; // Import the Product model
 use App\Models\Batch; // Import the Product model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 
 class ProductController extends Controller
@@ -12,11 +13,17 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
+    public function __construct()
+    {
+        $this->middleware('auth'); // Require authentication for all methods in this controller
+    }
+
     public function index()
     {
         $products = Product::all(); // Fetch all products from the database
         return view('pages.home', compact('products')); // Pass data to the view
     }
+
     /**
      * Show the form for creating a new resource.
      */
