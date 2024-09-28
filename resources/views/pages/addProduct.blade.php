@@ -37,7 +37,20 @@
                         <label for="Category">Category</label>
                         <input type="text" class="form-control" id="Category" name="Category">
                     </div>
+                    <div class="form-group">
+                        <label for="Image">Image</label>
+                        <input type="file" class="form-control" id="Image" name="Image">
+                    </div>
+                    <div class="form-group">
+                        <label for="Secondary_Img">Secondary Image</label>
+                        <input type="file" class="form-control" id="Secondary_Img" name="Secondary_Img">
+                    </div>
+                    <div class="form-group">
+                        <label for="Img_color">Image Color</label>
+                        <input type="text" class="form-control" id="Img_color" name="Img_color">
+                    </div>
                 </div>
+
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="Bundle_Qty">Bundle Qty</label>
@@ -46,10 +59,6 @@
                     <div class="form-group">
                         <label for="Consign">Consign</label>
                         <input type="number" step="0.01" class="form-control" id="Consign" name="Consign">
-                    </div>
-                    <div class="form-group">
-                        <label for="Cash">Cash</label>
-                        <input type="number" step="0.01" class="form-control" id="Cash" name="Cash">
                     </div>
                     <div class="form-group">
                         <label for="SRP">SRP</label>
@@ -75,77 +84,22 @@
                         <label for="Supplier">Supplier</label>
                         <input type="text" class="form-control" id="Supplier" name="Supplier">
                     </div>
+                    <div class="form-group">
+                        <label for="Bale">Bale</label>
+                        <input type="text" class="form-control" id="Bale" name="Bale">
+                    </div>
                 </div>
             </div>
-            <div class="form-group">
-                <label for="Image">Image</label>
-                <input type="file" class="form-control" id="Image" name="Image">
-            </div>
-            <div class="form-group">
-                <label for="Secondary_Img">Secondary Image</label>
-                <input type="file" class="form-control" id="Secondary_Img" name="Secondary_Img">
-            </div>
-            <div class="form-group">
-                <label for="Img_color">Image Color</label>
-                <input type="text" class="form-control" id="Img_color" name="Img_color">
-            </div>
-            <div class="form-group">
-                <label for="Bale">Bale</label>
-                <input type="text" class="form-control" id="Bale" name="Bale">
-            </div>
-            <button type="submit" class="btn btn-primary">Add Product</button>
+
+            <button type="submit" class="btn btn-primary mt-3">Add Product</button>
         </form>
     </div>
 
     <div id="snackbar"></div>
 
-    <script>
-        function showSnackbar(message) {
-            const snackbar = document.getElementById("snackbar");
-            snackbar.textContent = message;
-            snackbar.className = "show";
-            setTimeout(() => { snackbar.className = snackbar.className.replace("show", ""); }, 3000);
-        }
+    <script src="{{ asset('js/product.js') }}"></script>
+@endsection
 
-        @if(session('success'))
-            showSnackbar("{{ session('success') }}");
-        @endif
-
-        @if($errors->any())
-            showSnackbar("{{ $errors->first() }}");
-        @endif
-    </script>
-
-    <style>
-        #snackbar {
-            visibility: hidden;
-            min-width: 250px;
-            margin-left: -125px;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            border-radius: 2px;
-            padding: 16px;
-            position: fixed;
-            z-index: 1;
-            left: 50%;
-            bottom: 30px;
-            font-size: 17px;
-        }
-
-        #snackbar.show {
-            visibility: visible;
-            animation: fadein 0.5s, fadeout 0.5s 2.5s;
-        }
-
-        @keyframes fadein {
-            from {bottom: 0; opacity: 0;} 
-            to {bottom: 30px; opacity: 1;}
-        }
-
-        @keyframes fadeout {
-            from {bottom: 30px; opacity: 1;} 
-            to {bottom: 0; opacity: 0;}
-        }
-    </style>
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('css/addProduct.css') }}">
 @endsection

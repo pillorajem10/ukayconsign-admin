@@ -1,0 +1,29 @@
+.dashboard-card {
+    border: none;
+    border-radius: 15px; /* Rounded corners for the card */
+    padding: 30px; /* Padding inside the card */
+    background-color: #ffffff; /* White background for the card */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.list-group-item {
+    font-size: 18px; /* Increased font size for list items */
+    background-color: #e9ecef; /* Light gray background for list items */
+    border: none; /* Remove borders for a cleaner look */
+    transition: background-color 0.3s; /* Smooth transition */
+}
+
+.list-group-item:hover {
+    background-color: #d4d4d4; /* Darker gray on hover */
+}
+
+.btn-logout {
+    background-color: #ff4d4d; /* Red color for logout button */
+    border-radius: 20px; /* Rounded corners */
+    padding: 10px 20px; /* Button padding */
+    font-size: 16px; /* Font size */
+}
+
+.btn-logout:hover {
+    background-color: #e60000; /* Darker red on hover */
+}

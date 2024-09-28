@@ -3,8 +3,25 @@
 @section('title', 'Home')
 
 @section('content')
-    <div>
-        <table class="table table-bordered table-striped table-hover w-100">
+    <div class="mb-3 text-right">
+        <a href="{{ route('products.create') }}" class="btn btn-gradient">Create New Product</a>
+    </div>
+
+    <!-- Success Message -->
+    @if(session('success'))
+        <div id="success-message" class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    @if(session('error'))
+        <div id="error-message" class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped table-hover w-100 custom-table">
             <thead class="thead-dark">
                 <tr>
                     <th>SKU</th>
@@ -21,11 +38,13 @@
                     <th>Stock</th>
                     <th>Supplier</th>
                     <th>Image</th>
+                    <th>Actions</th> <!-- Add an Actions column -->
                 </tr>
             </thead>
             <tbody>
                 @foreach($products as $product)
                     <tr>
+                        <!-- Existing columns here -->
                         <td>{{ $product->SKU ?? 'N/A' }}</td>
                         <td>{{ $product->Bundle ?? 'N/A' }}</td>
                         <td>{{ $product->ProductID ?? 'N/A' }}</td>
@@ -41,14 +60,28 @@
                         <td>{{ $product->Supplier ?? 'N/A' }}</td>
                         <td>
                             @if($product->Image)
-                                <img src="data:image/jpeg;base64,{{ base64_encode($product->Image) }}" alt="Product Image" style="width: 100px; height: auto;">
+                                <img src="data:image/jpeg;base64,{{ base64_encode($product->Image) }}" alt="Product Image" class="product-image">
                             @else
                                 N/A
                             @endif
+                        </td>
+                        <td>
+                            <!-- Delete button -->
+                            <form action="{{ route('products.destroy', $product->SKU) }}" method="POST" style="display:inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>                                                      
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
+
+    <script src="{{ asset('js/product.js') }}"></script>  
+@endsection
+
+@section('styles')
+    <link rel="stylesheet" href="{{ asset('css/homePage.css') }}">
 @endsection

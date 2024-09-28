@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Product; // Import the Product model
 use App\Models\ProductBarcode; // Import the Product model
 use App\Models\Batch; // Import the Product model
+use App\Models\ReceivedProduct;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -140,7 +141,7 @@ class ProductController extends Controller
         $product->Batch_number = $batchNumber; // Add this line
         $product->save();
     
-        return redirect('/')->with('success', 'Product added successfully!');
+        return redirect()->route('products.index')->with('success', 'Product added successfully!');
     }    
     
     /**
@@ -170,8 +171,20 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        //
-    }
+        // Delete all barcodes associated with this product's SKU
+        $product->productBarcodes()->delete();
+    
+        // Delete all batches associated with this product's SKU
+        $product->batches()->delete();
+    
+        // Delete all received products associated with this product's SKU
+        $product->receivedProducts()->delete();
+    
+        // Delete the product
+        $product->delete();
+    
+        return redirect()->route('products.index')->with('success', 'Product deleted successfully!');
+    }         
 }

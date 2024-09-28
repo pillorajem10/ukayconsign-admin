@@ -1,0 +1,59 @@
+.form-container {
+    max-width: 600px;
+    margin: 0 auto; /* Center the form */
+    padding: 20px;
+}
+
+.form-card {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.form-header {
+    padding: 15px;
+    background-color: green; /* Bootstrap primary color */
+    color: white;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    text-align: center;
+}
+
+.form-body {
+    padding: 20px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-control {
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 10px;
+    transition: border-color 0.2s;
+}
+
+.form-control:focus {
+    border-color: #007bff; /* Focus color */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+
+.btn-primary {
+    background-color: green; /* Bootstrap primary color */
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-size: 16px;
+    color: white;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    background-color: #037023; /* Darker shade on hover */
+}

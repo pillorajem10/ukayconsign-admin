@@ -1,0 +1,44 @@
+.order-card {
+    border: none;
+    border-radius: 15px; /* Rounded corners for cards */
+    padding: 20px; /* Padding inside the card */
+    background-color: #ffffff; /* White background for the card */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    transition: transform 0.2s; /* Smooth hover effect */
+    margin: 1rem;
+}
+
+.order-card:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+.table {
+    margin-top: 10px; /* Spacing above tables */
+}
+
+.card-title {
+    font-size: 1.25rem; /* Larger font size for card title */
+}
+
+.card-subtitle {
+    font-size: 1rem; /* Font size for subtitle */
+    color: #6c757d; /* Muted color for subtitle */
+}
+
+@media (max-width: 500px) {
+    .card-title {
+        font-size: 0.5rem; /* Smaller font size for card title */
+    }
+
+    .card-subtitle {
+        font-size: 0.5rem; /* Smaller font size for subtitle */
+    }
+
+    .table {
+        font-size: 0.5rem; /* Smaller font size for table text */
+    }
+
+    .order-card {
+        padding: 15px; /* Optional: reduce padding for smaller screens */
+    }
+}

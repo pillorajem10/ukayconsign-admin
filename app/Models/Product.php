@@ -22,11 +22,25 @@ class Product extends Model
         'SRP', 'maxSRP', 'PotentialProfit', 'Date', 'Cost', 
         'Stock', 'Supplier', 'Image', 'Secondary_Img', 
         'Img_color', 'is_hidden', 'Batch_number', 'Bale', 
-        'createdAt', 'batches'
+        'createdAt'
     ];
 
     protected $dates = [
         'Date', 'createdAt'
     ];
-}
 
+    public function batches()
+    {
+        return $this->hasMany(Batch::class, 'SKU', 'SKU');
+    }
+    
+    public function productBarcodes()
+    {
+        return $this->hasMany(ProductBarcode::class, 'product_sku', 'SKU');
+    }
+
+    public function receivedProducts()
+    {
+        return $this->hasMany(ReceivedProduct::class, 'product_sku', 'SKU');
+    }
+}

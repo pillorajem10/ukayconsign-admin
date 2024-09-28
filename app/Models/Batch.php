@@ -9,10 +9,10 @@ class Batch extends Model
 {
     use HasFactory;
 
-    protected $table = 'batches'; // Table name
-    protected $primaryKey = 'Batch_number'; // Primary key
-    public $incrementing = false; // Primary key is not auto-incrementing
-    protected $keyType = 'string'; // Primary key type
+    protected $table = 'batches';
+    protected $primaryKey = 'Batch_number';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     public $timestamps = false; // Disable timestamps
 
@@ -37,11 +37,16 @@ class Batch extends Model
         'Date', 
         'Bale', 
         'Batch_number', 
-        'createdAt' // Include createdAt field
+        'createdAt'
     ];
 
     protected $dates = [
         'Date', 
-        'createdAt' // Handle as date fields if needed
+        'createdAt'
     ];
+
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'SKU', 'SKU');
+    }
 }
