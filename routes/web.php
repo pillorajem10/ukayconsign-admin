@@ -8,6 +8,8 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReceivedProductController;
 use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\StoreController;
+use App\Http\Controllers\StoreInventoryController;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -31,7 +33,9 @@ Route::delete('/products/delete/{product:SKU}', [ProductController::class, 'dest
 Route::get('/products/delete/{product}', function() {
     return redirect()->route('products.index')->with('error', 'Invalid request method. Please use the delete action.');
 });
-
+Route::get('/products/update/{product}', function() {
+    return redirect()->route('products.index')->with('error', 'Invalid request method. Please use the update action.');
+});
 
 // ORDERS (transactions) ROUTES
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
@@ -60,11 +64,20 @@ Route::patch('/suppliers/update/{supplier}', [SupplierController::class, 'update
 Route::get('/suppliers/delete/{supplier}', function() {
     return redirect()->route('suppliers.index')->with('error', 'Invalid request method. Please use the delete action.');
 });
+Route::get('/suppliers/update/{supplier}', function() {
+    return redirect()->route('suppliers.index')->with('error', 'Invalid request method. Please use the update action.');
+});
 
 
 // SUPPLIERS CREATE ROUTES
 Route::get('/suppliers/create', [SupplierController::class, 'create'])->name('suppliers.create');
 Route::post('/suppliers/store', [SupplierController::class, 'store'])->name('suppliers.store');
+
+// STORE ROUTES
+Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
+
+// STORE INVENTORY ROUTES
+Route::get('/store-inventory', [StoreInventoryController::class, 'index'])->name('store-inventory.index');
 
 
 // DASHBOARD

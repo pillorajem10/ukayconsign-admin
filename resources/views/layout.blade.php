@@ -115,7 +115,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg">
-        <a class="navbar-brand" href="/">Ukay Supplier Consign Admin</a>
+        <a class="navbar-brand" href="/">USC Admin</a>
         <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <div class="navbar-toggler-icon">
                 <span class="bar1"></span>
@@ -137,6 +137,12 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/suppliers">Suppliers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/stores">Stores</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/store-inventory">Store Inventory</a>
                     </li>
                 @endif
             </ul>

@@ -5,6 +5,7 @@ use App\Models\Product; // Import the Product model
 use App\Models\ProductBarcode; // Import the Product model
 use App\Models\Batch; // Import the Product model
 use App\Models\ReceivedProduct;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
@@ -21,18 +22,24 @@ class ProductController extends Controller
         $this->middleware('auth'); // Require authentication for all methods in this controller
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $products = Product::all(); // Fetch all products from the database
-        return view('pages.home', compact('products')); // Pass data to the view
+        $search = $request->input('search'); // Get the search input
+        $products = Product::when($search, function ($query) use ($search) {
+            return $query->where('ProductID', 'like', '%' . $search . '%');
+        })->paginate(10); // Fetch products with pagination
+    
+        return view('pages.home', compact('products', 'search')); // Pass data to the view
     }
+      
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view('pages.addProduct');
+        $suppliers = Supplier::all(); // Fetch all suppliers
+        return view('pages.addProduct', compact('suppliers')); // Pass suppliers to the view
     }
 
     /**

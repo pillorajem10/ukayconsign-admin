@@ -82,7 +82,12 @@
                     </div>
                     <div class="form-group">
                         <label for="Supplier">Supplier</label>
-                        <input type="text" class="form-control" id="Supplier" name="Supplier">
+                        <select class="form-control" id="Supplier" name="Supplier" required>
+                            <option value="">Select Supplier</option>
+                            @foreach($suppliers as $supplier)
+                                <option value="{{ $supplier->id }}">{{ $supplier->supplier_name }}</option>
+                            @endforeach
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="Bale">Bale</label>

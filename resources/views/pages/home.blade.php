@@ -3,8 +3,18 @@
 @section('title', 'Home')
 
 @section('content')
-    <div class="mb-3 text-right">
-        <a href="{{ route('products.create') }}" class="btn btn-gradient">Create New Product</a>
+    <div class="upper-container mb-3">
+        <div>
+            <a href="{{ route('products.create') }}" class="btn btn-gradient">Create New Product</a>
+        </div>
+
+        <div>
+            <form action="{{ route('products.index') }}" method="GET" class="form-inline">
+                <button type="submit" class="btn btn-custom-search mr-2">Search</button>
+                <a href="{{ route('products.index') }}" class="btn btn-custom-search mr-2">Clear Search</a>
+                <input type="text" name="search" value="{{ request('search') }}" class="form-control" placeholder="Search by Product ID" aria-label="Search">
+            </form>
+        </div>        
     </div>
 
     <!-- Success Message -->
@@ -38,13 +48,12 @@
                     <th>Stock</th>
                     <th>Supplier</th>
                     <th>Image</th>
-                    <th>Actions</th> <!-- Add an Actions column -->
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach($products as $product)
                     <tr>
-                        <!-- Existing columns here -->
                         <td>{{ $product->SKU ?? 'N/A' }}</td>
                         <td>{{ $product->Bundle ?? 'N/A' }}</td>
                         <td>{{ $product->ProductID ?? 'N/A' }}</td>
@@ -66,22 +75,30 @@
                             @endif
                         </td>
                         <td>
-                            <!-- Delete button -->
                             <form action="{{ route('products.destroy', $product->SKU) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Delete</button>
-                            </form>                                                      
+                            </form>
                         </td>
                     </tr>
                 @endforeach
             </tbody>
         </table>
+    
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {{ $products->appends(request()->query())->links('vendor.pagination.bootstrap-4') }}
+            </ul>
+        </nav>        
     </div>
 
+    <!-- public/js/product.js  -->
     <script src="{{ asset('js/product.js') }}"></script>  
 @endsection
 
 @section('styles')
+
+    <!-- public/css/homePage.css  -->
     <link rel="stylesheet" href="{{ asset('css/homePage.css') }}">
 @endsection

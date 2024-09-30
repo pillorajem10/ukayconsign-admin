@@ -94,18 +94,6 @@
     color: white;
 }
 
-@media (max-width: 768px) {
-    .custom-table th, 
-    .custom-table td {
-        font-size: 12px;
-        padding: 10px;
-    }
-
-    .custom-table .product-image {
-        width: 60px;
-    }
-}
-
 /* Gradient button styling */
 .btn-gradient {
     background: linear-gradient(45deg, #006400, #228b22);
@@ -123,4 +111,63 @@
     background: linear-gradient(45deg, #228b22, #32cd32);
     transform: translateY(-2px);
     text-decoration: none;
+}
+
+.form-inline {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+    gap: 10px;
+}
+
+.form-control {
+    width: 300px; /* Adjust width as needed */
+}
+
+.btn-custom-search {
+    background-color: white;
+    border: 1px solid green; /* Thin green border */
+    color: green; /* Text color */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.btn-custom-search:hover {
+    background-color: green; /* Change background on hover */
+    color: white; /* Change text color on hover */
+}
+
+.upper-container {
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+@media (max-width: 768px) {
+    .custom-table th, 
+    .custom-table td {
+        font-size: 12px; /* Font size for table cells */
+        padding: 8px; /* Reduced padding */
+    }
+
+    .custom-table .product-image {
+        width: 60px; /* Smaller product image */
+    }
+
+    .upper-container {
+        font-size: 14px; /* Smaller font size for upper container */
+        padding: 10px; /* Reduced padding for the upper container */
+    }
+
+    .form-control {
+        width: 100%; /* Full width for search input */
+    }
+
+    .btn-custom-search {
+        padding: 8px 12px; /* Smaller padding for buttons */
+    }
+
+    .btn-gradient {
+        padding: 8px 15px; /* Smaller padding for gradient button */
+    }
 }
