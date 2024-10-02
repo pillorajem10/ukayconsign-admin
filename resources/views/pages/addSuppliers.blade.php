@@ -27,5 +27,5 @@
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/addSupplier.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/addSupplier.css?v=1.1') }}">
 @endsection
