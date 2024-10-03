@@ -3,16 +3,20 @@
 @section('title', 'Orders')
 
 @section('content')
-    <div class="container mt-5">
-        <h1 class="text-center mb-4">Orders</h1>
+    <div class="orderpage-loading-overlay" id="orderPageloadingOverlay">
+        <div class="orderpage-spinner"></div>
+    </div>
 
-        <div class="row">
+    <div>
+        <h1 class="text-center mb-4">Orders</h1>
+        <div>
             @forelse ($orders as $order)
                 <div>
                     <div class="card order-card shadow-lg rounded">
                         <div class="card-body">
                             <h5 class="card-title">Order ID: {{ $order->id }}</h5>
                             <h6 class="card-subtitle mb-2 text-muted">Customer: {{ $order->first_name }} {{ $order->last_name }}</h6>
+                            <h6 class="card-subtitle mb-2 text-muted">Store Name: {{ $order->store_name }}</h6>
                             <p><strong>Email:</strong> {{ $order->email }}</p>
                             <p><strong>Address:</strong> {{ $order->address }}</p>
                             
@@ -51,7 +55,7 @@
                                 @method('PATCH')
                                 <div class="form-group">
                                     <label for="order-status">Order Status:</label>
-                                    <select name="order_status" class="form-control" onchange="this.form.submit()">
+                                    <select name="order_status" class="form-control" onchange="showLoading(); this.form.submit();">
                                         <option value="Processing" {{ $order->order_status == 'Processing' ? 'selected' : '' }}>Processing</option>
                                         <option value="Packed" {{ $order->order_status == 'Packed' ? 'selected' : '' }}>Packed</option>
                                         <option value="Shipped" {{ $order->order_status == 'Shipped' ? 'selected' : '' }}>Shipped</option>
@@ -70,8 +74,10 @@
             @endforelse
         </div>
     </div>
+
+    <script src="{{ asset('js/orders.js?v=1.2') }}"></script>
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/ordersPage.css?v=1.1') }}">
+    <link rel="stylesheet" href="{{ asset('css/ordersPage.css?v=1.2') }}">
 @endsection

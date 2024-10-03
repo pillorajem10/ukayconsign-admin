@@ -81,6 +81,14 @@ class ProductController extends Controller
         // Create the product
         $product = new Product($validatedData);
     
+        // Handle image uploads
+        if ($request->hasFile('Image')) {
+            $product->Image = file_get_contents($request->file('Image')->getRealPath());
+        }
+        if ($request->hasFile('Secondary_Img')) {
+            $product->Secondary_Img = file_get_contents($request->file('Secondary_Img')->getRealPath());
+        }
+    
         // Generate ProductID from concatenation
         $product->ProductID = trim("{$request->Type} {$request->Style} {$request->Color} {$request->Gender} {$request->Category}");
     
@@ -149,7 +157,8 @@ class ProductController extends Controller
         $product->save();
     
         return redirect()->route('products.index')->with('success', 'Product added successfully!');
-    }    
+    }
+       
     
     /**
      * Display the specified resource.

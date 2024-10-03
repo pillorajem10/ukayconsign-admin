@@ -1,0 +1,58 @@
+/* General Styles */
+.barcode-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.barcode-table th,
+.barcode-table td {
+    width: 70mm; /* Set cell width to 70mm */
+    height: 37.1mm; /* Set cell height to 42mm */
+    text-align: center;
+    vertical-align: middle; /* Vertically center the content */
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.barcode-image {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Button Styling */
+.print-button {
+    margin: 10px 0;
+}
+
+/* Print Styles */
+@media print {
+    body {
+        margin: 0;
+        padding: 0;
+    }
+
+    .table-responsive {
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .barcode-table {
+        border: 1px solid #000;
+        font-size: 12px; /* Adjust font size for better fit */
+    }
+
+    .barcode-image {
+        max-width: 80%; /* Ensure images fit well */
+        height: auto;
+    }
+
+    .pagination,
+    .print-button {
+        display: none; /* Hide pagination and buttons when printing */
+    }
+
+    @page {
+        size: A4; /* Specify A4 paper size */
+        margin: 10mm; /* Margin for print */
+    }
+}

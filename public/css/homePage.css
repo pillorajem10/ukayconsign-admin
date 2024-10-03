@@ -143,6 +143,18 @@
     gap: 10px;
 }
 
+.button-stack {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+}
+
+.button-stack form {
+    margin-bottom: 5px; /* Space between buttons */
+}
+
+
 @media (max-width: 768px) {
     .custom-table th, 
     .custom-table td {

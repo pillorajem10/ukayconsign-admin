@@ -35,7 +35,12 @@
                     </div>
                     <div class="form-group">
                         <label for="Category">Category</label>
-                        <input type="text" class="form-control" id="Category" name="Category">
+                        <select class="form-control" id="Category" name="Category">
+                            <option value="">Select Category</option>
+                            <option value="Exclusive">Exclusive</option>
+                            <option value="Signature">Signature</option>
+                            <option value="Essential">Essential</option>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="Image">Image</label>
@@ -85,7 +90,7 @@
                         <select class="form-control" id="Supplier" name="Supplier" required>
                             <option value="">Select Supplier</option>
                             @foreach($suppliers as $supplier)
-                                <option value="{{ $supplier->id }}">{{ $supplier->supplier_name }}</option>
+                                <option value="{{ $supplier->supplier_name }}">{{ $supplier->supplier_name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -102,9 +107,9 @@
 
     <div id="snackbar"></div>
 
-    <script src="{{ asset('js/product.js?v=1.1') }}"></script>
+    <script src="{{ asset('js/product.js?v=1.2') }}"></script>
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/addProduct.css?v=1.1') }}">
+    <link rel="stylesheet" href="{{ asset('css/addProduct.css?v=1.2') }}">
 @endsection

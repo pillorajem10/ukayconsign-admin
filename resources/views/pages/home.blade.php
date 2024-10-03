@@ -74,13 +74,14 @@
                                 N/A
                             @endif
                         </td>
-                        <td>
-                            <form action="{{ route('products.destroy', $product->SKU) }}" method="POST" style="display:inline;">
+                        <td class="button-stack">
+                            <form action="{{ route('products.destroy', $product->SKU) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
-                        </td>
+                            <a href="{{ route('product-barcodes.index', ['product_sku' => $product->SKU]) }}" class="btn btn-info">See Barcodes</a>
+                        </td>                                                                     
                     </tr>
                 @endforeach
             </tbody>
@@ -94,11 +95,11 @@
     </div>
 
     <!-- public/js/product.js  -->
-    <script src="{{ asset('js/product.js?v=1.1') }}"></script>  
+    <script src="{{ asset('js/product.js?v=1.2') }}"></script>  
 @endsection
 
 @section('styles')
 
     <!-- public/css/homePage.css  -->
-    <link rel="stylesheet" href="{{ asset('css/homePage.css?v=1.1') }}">
+    <link rel="stylesheet" href="{{ asset('css/homePage.css?v=1.2') }}">
 @endsection

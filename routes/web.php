@@ -10,6 +10,7 @@ use App\Http\Controllers\ReceivedProductController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\StoreController;
 use App\Http\Controllers\StoreInventoryController;
+use App\Http\Controllers\ProductBarcodesController;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -79,6 +80,8 @@ Route::get('/stores', [StoreController::class, 'index'])->name('stores.index');
 // STORE INVENTORY ROUTES
 Route::get('/store-inventory', [StoreInventoryController::class, 'index'])->name('store-inventory.index');
 
+// PRODUCT BARCODES ROUTE
+Route::get('/product-barcodes', [ProductBarcodesController::class, 'index'])->name('product-barcodes.index');
 
 // DASHBOARD
 Route::get('/dashboard', function () {
