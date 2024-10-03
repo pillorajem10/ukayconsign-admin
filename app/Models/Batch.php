@@ -28,7 +28,6 @@ class Batch extends Model
         'Bundle_Qty', 
         'Consign', 
         'SRP', 
-        'maxSRP', 
         'PotentialProfit', 
         'Cost', 
         'Stock', 

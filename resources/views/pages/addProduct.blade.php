@@ -70,10 +70,6 @@
                         <input type="text" class="form-control" id="SRP" name="SRP">
                     </div>
                     <div class="form-group">
-                        <label for="maxSRP">Max SRP</label>
-                        <input type="text" class="form-control" id="maxSRP" name="maxSRP">
-                    </div>
-                    <div class="form-group">
                         <label for="PotentialProfit">Potential Profit</label>
                         <input type="number" class="form-control" id="PotentialProfit" name="PotentialProfit">
                     </div>
