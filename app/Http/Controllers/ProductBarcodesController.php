@@ -24,7 +24,7 @@ class ProductBarcodesController extends Controller
             return redirect()->route('products.index')->with('error', 'No barcodes found');
         }
     
-        return view('pages.productbarcodes', compact('barcodes', 'productSku')); // Pass data to the view
+        return view('pages.productBarcodes', compact('barcodes', 'productSku')); // Pass data to the view
     }
       
 }
