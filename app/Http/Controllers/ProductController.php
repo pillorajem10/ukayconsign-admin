@@ -60,7 +60,6 @@ class ProductController extends Controller
             'Consign' => 'nullable|numeric',
             'SRP' => 'nullable|string|max:50',
             'PotentialProfit' => 'nullable|numeric',
-            'Date' => 'nullable|date',
             'Cost' => 'nullable|numeric',
             'Stock' => 'nullable|integer',
             'Supplier' => 'nullable|string|max:255',
@@ -123,13 +122,12 @@ class ProductController extends Controller
             'Cost' => $product->Cost,
             'Stock' => $product->Stock,
             'Supplier' => $product->Supplier,
-            'Img_color' => $product->Img_color,
-            'Date' => now(), // Use current date
             'Bale' => $bale,
             'Batch_number' => $batchNumber,
         ]);
     
         // Generate barcodes
+
         for ($i = 0; $i < $product->Stock; $i++) {
             $barcodeNumber = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT); // Generate a random 6-digit number
     

@@ -9,7 +9,7 @@ class Batch extends Model
 {
     use HasFactory;
 
-    protected $table = 'batches';
+    protected $table = 'usc_batches';
     protected $primaryKey = 'Batch_number';
     public $incrementing = false;
     protected $keyType = 'string';
@@ -32,15 +32,12 @@ class Batch extends Model
         'Cost', 
         'Stock', 
         'Supplier', 
-        'Img_color', 
-        'Date', 
         'Bale', 
         'Batch_number', 
         'createdAt'
     ];
 
     protected $dates = [
-        'Date', 
         'createdAt'
     ];
 
