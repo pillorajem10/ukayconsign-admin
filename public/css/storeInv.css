@@ -60,6 +60,34 @@ button:hover {
     color: black;
 }
 
+/* Style for the store selection dropdown */
+.store-select {
+    width: 200px; /* Adjust width as needed */
+    padding: 10px; /* Add some padding */
+    border: 1px solid #ced4da; /* Border styling */
+    border-radius: 5px; /* Rounded corners */
+    background-color: #f8f9fa; /* Background color */
+    color: #495057; /* Text color */
+    font-size: 16px; /* Font size */
+    transition: border-color 0.2s; /* Transition for border color */
+    margin-bottom: 1rem;
+}
+
+/* Change border color on focus */
+.store-select:focus {
+    border-color: #80bdff; /* Border color on focus */
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Bootstrap-like focus effect */
+}
+
+/* Optional: Style for the search input */
+.search-input {
+    padding: 10px; /* Add padding */
+    border: 1px solid #ced4da; /* Border styling */
+    border-radius: 5px; /* Rounded corners */
+    width: 250px; /* Adjust width as needed */
+    font-size: 16px; /* Font size */
+}
 
 /* Responsive styles */
 @media (max-width: 768px) {

@@ -97,11 +97,11 @@
     </div>
 
     <!-- public/js/product.js  -->
-    <script src="{{ asset('js/product.js?v=1.4') }}"></script>  
+    <script src="{{ asset('js/product.js?v=1.5') }}"></script>  
 @endsection
 
 @section('styles')
 
     <!-- public/css/homePage.css  -->
-    <link rel="stylesheet" href="{{ asset('css/homePage.css?v=1.4') }}">
+    <link rel="stylesheet" href="{{ asset('css/homePage.css?v=1.5') }}">
 @endsection

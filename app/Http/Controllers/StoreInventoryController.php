@@ -20,6 +20,9 @@ class StoreInventoryController extends Controller
     {
         $query = StoreInventory::query();
         
+        // Fetch all stores for the dropdown
+        $stores = Store::all();
+        
         // Filter by store_id if provided
         if ($request->filled('store_id')) {
             // Check if the store_id is valid
@@ -34,8 +37,9 @@ class StoreInventoryController extends Controller
         // Optionally add any other filters or sorting here
     
         $inventory = $query->paginate(10);
-        return view('pages.storeInventory', compact('inventory'));
-    }   
+        return view('pages.storeInventory', compact('inventory', 'stores'));
+    }
+      
 
     /**
      * Show the form for creating a new resource.
