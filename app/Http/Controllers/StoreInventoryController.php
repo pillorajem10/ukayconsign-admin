@@ -24,22 +24,24 @@ class StoreInventoryController extends Controller
         $stores = Store::all();
         
         // Filter by store_id if provided
-        if ($request->filled('store_id')) {
-            // Check if the store_id is valid
+        if ($request->filled('store_id') && $request->store_id !== 'all') {
             $store = Store::find($request->store_id);
             if (!$store) {
                 return redirect()->route('home')->with('error', 'Store Id is not valid.');
             }
-    
             $query->where('store_id', $request->store_id);
         }
     
-        // Optionally add any other filters or sorting here
-    
-        $inventory = $query->paginate(10);
+        // Search by Product ID if provided
+        if ($request->filled('search')) {
+            $searchTerm = $request->get('search');
+            $query->where('ProductID', 'LIKE', '%' . $searchTerm . '%');
+        }
+        
+        // Paginate the results
+        $inventory = $query->paginate(1);
         return view('pages.storeInventory', compact('inventory', 'stores'));
-    }
-      
+    }      
 
     /**
      * Show the form for creating a new resource.

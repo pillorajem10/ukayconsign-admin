@@ -1,109 +1,102 @@
-/* Base styles for the table */
+/* Container styles */
+.container {
+    margin: 0 auto;
+    padding: 20px;
+    max-width: 800px;
+}
+
+/* Heading styles */
+h1 {
+    color: #343a40;
+    font-size: 1.5rem; /* Adjust heading font size if necessary */
+}
+
+/* Search form styles */
+.search-form {
+    margin-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    justify-content: space-between;
+}
+
+/* Input field styles */
+.input-group .form-control {
+    flex: 1;
+    margin-right: 10px;
+}
+
+/* Table styles */
 .table {
-    width: 100%;
-    border-collapse: collapse;
-    overflow-x: auto; /* Handle overflow */
+    background-color: #ffffff;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    font-size: 0.9rem; /* Adjusted font size for the table */
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #f2f2f2;
 }
 
 /* Table header styles */
-.table thead {
-    background-color: green; /* Green header */
-    color: white; /* White text for contrast */
+.table th {
+    background-color: green;
+    color: #ffffff;
+    padding: 0.5rem; /* Reduced padding */
+    font-size: 0.9rem; /* Adjusted font size for headers */
 }
 
 /* Table cell styles */
 .table th, .table td {
-    padding: 10px; /* Padding for cells */
-    border: 1px solid #ddd; /* Border for cells */
-    text-align: left; /* Align text to the left */
+    padding: 0.5rem; /* Reduced padding */
+    text-align: left;
 }
 
-/* Search form styles */
-.search-input {
-    padding: 8px; /* Padding for input */
-    border: 1px solid #ccc; /* Border for input */
-    border-radius: 4px; /* Rounded corners */
-    width: 200px; /* Fixed width */
-    margin-right: 10px; /* Space between input and button */
+/* Button styles */
+.btn-primary {
+    background-color: green;
+    border: none;
 }
 
-/* Search button styles */
-button {
-    padding: 8px 12px; /* Padding for button */
-    background-color: green; /* Button color */
-    color: white; /* Button text color */
-    border: none; /* Remove border */
-    border-radius: 4px; /* Rounded corners */
-    cursor: pointer; /* Pointer cursor on hover */
+.btn-primary:hover {
+    background-color: darkgreen;
 }
 
-/* Button hover effect */
-button:hover {
-    background-color: darkgreen; /* Darker green on hover */
+/* Flex styles for pagination */
+.d-flex {
+    margin-top: 20px;
 }
 
-/* Clear button styles */
-.clear-button {
-    padding: 8px 12px; /* Padding for the button */
-    background-color: lightgray; /* Background color */
-    color: black; /* Text color */
-    border: 1px solid #ccc; /* Border for the button */
-    border-radius: 4px; /* Rounded corners */
-    text-decoration: none; /* Remove underline */
-    margin-left: 10px; /* Space between search and clear buttons */
+/* Additional styles for the search form */
+.input-group {
+    display: flex;
+    align-items: center;
 }
 
-/* Clear button hover effect */
-.clear-button:hover {
-    background-color: darkgray; /* Darker gray on hover */
-    text-decoration: none;
-    color: black;
+.input-group .form-control {
+    margin-right: 5px;
 }
 
-/* Style for the store selection dropdown */
-.store-select {
-    width: 200px; /* Adjust width as needed */
-    padding: 10px; /* Add some padding */
-    border: 1px solid #ced4da; /* Border styling */
-    border-radius: 5px; /* Rounded corners */
-    background-color: #f8f9fa; /* Background color */
-    color: #495057; /* Text color */
-    font-size: 16px; /* Font size */
-    transition: border-color 0.2s; /* Transition for border color */
-    margin-bottom: 1rem;
+.btn {
+    margin-left: 5px; /* Space between buttons */
 }
 
-/* Change border color on focus */
-.store-select:focus {
-    border-color: #80bdff; /* Border color on focus */
-    outline: none; /* Remove default outline */
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* Bootstrap-like focus effect */
+/* Optional: Customize button colors */
+.btn-secondary {
+    background-color: #6c757d; /* Adjust to your theme */
+    border-color: #6c757d;
 }
 
-/* Optional: Style for the search input */
-.search-input {
-    padding: 10px; /* Add padding */
-    border: 1px solid #ced4da; /* Border styling */
-    border-radius: 5px; /* Rounded corners */
-    width: 250px; /* Adjust width as needed */
-    font-size: 16px; /* Font size */
+.btn-secondary:hover {
+    background-color: #5a6268; /* Darker on hover */
+    border-color: #545b62;
 }
 
-/* Responsive styles */
-@media (max-width: 768px) {
-    .table th, .table td {
-        padding: 5px; /* Smaller padding */
-        font-size: 14px; /* Smaller font size */
-    }
-    .search-input {
-        width: 100%; /* Full width on smaller screens */
-        margin-bottom: 10px; /* Space below the input */
-    }
-}
 
-@media (max-width: 480px) {
-    .table th, .table td {
-        padding: 3px; /* Even smaller padding */
-        font-size: 12px; /* Smaller font size for mobile */
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .table {
+        font-size: 0.8rem; /* Further reduce font size on smaller screens */
     }
 }
