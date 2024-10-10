@@ -40,5 +40,5 @@
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/loginPage.css?v=1.3') }}">
+    <link rel="stylesheet" href="{{ asset('css/loginPage.css?v=1.4') }}">
 @endsection
