@@ -93,6 +93,21 @@ h1 {
     border-color: #545b62;
 }
 
+.clear-button {
+    border: 2px solid green;
+    color: green;
+    background-color: white;
+    padding: 6px 12px;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.clear-button:hover {
+    background-color: lightgreen;
+    color: white;
+}
+
 
 /* Responsive adjustments */
 @media (max-width: 600px) {

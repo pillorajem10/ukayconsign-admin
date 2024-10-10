@@ -19,6 +19,7 @@
             </select>
             <input type="text" name="search" placeholder="Search by Product ID" class="form-control" value="{{ request()->get('search') }}" />
             <button type="submit" class="btn btn-primary">Search</button>
+            <a href="{{ route('store-inventory.index') }}" class="btn clear-button">Clear</a> <!-- Clear button -->
         </div>
     </form>
 
@@ -60,7 +61,6 @@
     </div>
 </div>
 
-
 <!-- Link to CSS with cache-busting version -->
-<link rel="stylesheet" href="{{ asset('css/storeInv.css?v=1.4') }}">
+<link rel="stylesheet" href="{{ asset('css/storeInv.css?v=1.6') }}">
 @endsection
