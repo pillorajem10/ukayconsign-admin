@@ -49,7 +49,7 @@ class ProductController extends Controller
     {
         // Validate the incoming request
         $validatedData = $request->validate([
-            'SKU' => 'required|string|max:50|unique:products,SKU',
+            'SKU' => 'required|string|max:50|unique:usc_products,SKU',
             'Bundle' => 'nullable|string|max:255',
             'Type' => 'nullable|string|max:50',
             'Style' => 'nullable|string|max:50',
@@ -106,6 +106,8 @@ class ProductController extends Controller
         $batchNumber = "{$batchBase}-{$batchSuffix}";
     
         // Create the batch entry
+
+        /*
         Batch::create([
             'SKU' => $product->SKU,
             'Bundle' => $product->Bundle,
@@ -125,9 +127,11 @@ class ProductController extends Controller
             'Bale' => $bale,
             'Batch_number' => $batchNumber,
         ]);
+        */
     
         // Generate barcodes
 
+        /*
         for ($i = 0; $i < $product->Stock; $i++) {
             $barcodeNumber = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT); // Generate a random 6-digit number
     
@@ -144,7 +148,7 @@ class ProductController extends Controller
                 'batch_number' => $batchNumber,
                 'barcode_image' => $barcodeImage, // Save the barcode image
             ]);
-        }
+        }*/
     
         // Update the product to include the batch number
         $product->batches = json_encode([['Batch_number' => $batchNumber]]);

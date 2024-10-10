@@ -148,12 +148,14 @@
     flex-direction: column;
     justify-content: center;
     align-items: stretch;
+    gap: 5px;
 }
 
+/*
 .button-stack form {
-    margin-bottom: 5px; /* Space between buttons */
+    margin-bottom: 5px; /* Space between buttons 
 }
-
+*/
 
 @media (max-width: 768px) {
     .custom-table th, 

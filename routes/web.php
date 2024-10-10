@@ -45,7 +45,11 @@ Route::patch('/orders/{id}/status', [OrderController::class, 'updateStatus'])->n
 
 // RECEIVED PRODUCTS
 Route::get('/received-products', [ReceivedProductController::class, 'index'])->name('receivedProducts.index');
-
+Route::get('/received-products/create', [ReceivedProductController::class, 'create'])->name('receivedProducts.create');
+Route::post('/received-products', [ReceivedProductController::class, 'store'])->name('receivedProducts.store');
+Route::patch('/received-products/{id}/void', [ReceivedProductController::class, 'void'])->name('receivedProducts.void');
+Route::post('/received-products/{id}/generate-barcodes', [ReceivedProductController::class, 'generateBarcodes'])
+    ->name('receivedProducts.generateBarcodes');
 
 // AUTH ROUTES
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');

@@ -42,18 +42,10 @@
                             <option value="Essential">Essential</option>
                         </select>
                     </div>
-                    <div class="form-group">
-                        <label for="Image">Image</label>
-                        <input type="file" class="form-control" id="Image" name="Image">
-                    </div>
-                    <div class="form-group">
-                        <label for="Secondary_Img">Secondary Image</label>
-                        <input type="file" class="form-control" id="Secondary_Img" name="Secondary_Img">
-                    </div>
-                    <div class="form-group">
+                    {{--<div class="form-group">
                         <label for="Img_color">Image Color</label>
                         <input type="text" class="form-control" id="Img_color" name="Img_color">
-                    </div>
+                    </div>--}}
                 </div>
 
                 <div class="col-md-6">
@@ -74,14 +66,22 @@
                         <input type="number" class="form-control" id="PotentialProfit" name="PotentialProfit">
                     </div>
                     <div class="form-group">
+                        <label for="Image">Image</label>
+                        <input type="file" class="form-control" id="Image" name="Image">
+                    </div>
+                    <div class="form-group">
+                        <label for="Secondary_Img">Secondary Image</label>
+                        <input type="file" class="form-control" id="Secondary_Img" name="Secondary_Img">
+                    </div>
+                    {{--<div class="form-group">
                         <label for="Cost">Cost</label>
                         <input type="number" step="0.01" class="form-control" id="Cost" name="Cost">
-                    </div>
-                    <div class="form-group">
+                    </div>--}}
+                    {{--<div class="form-group">
                         <label for="Stock">Stock</label>
                         <input type="number" class="form-control" id="Stock" name="Stock">
-                    </div>
-                    <div class="form-group">
+                    </div>--}}
+                    {{--<div class="form-group">
                         <label for="Supplier">Supplier</label>
                         <select class="form-control" id="Supplier" name="Supplier" required>
                             <option value="">Select Supplier</option>
@@ -89,11 +89,11 @@
                                 <option value="{{ $supplier->supplier_name }}">{{ $supplier->supplier_name }}</option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="form-group">
+                    </div>--}}
+                    {{--<div class="form-group">
                         <label for="Bale">Bale</label>
                         <input type="text" class="form-control" id="Bale" name="Bale">
-                    </div>
+                    </div>--}}
                 </div>
             </div>
 
@@ -103,9 +103,9 @@
 
     <div id="snackbar"></div>
 
-    <script src="{{ asset('js/product.js?v=1.2') }}"></script>
+    <script src="{{ asset('js/product.js?v=1.3') }}"></script>
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/addProduct.css?v=1.2') }}">
+    <link rel="stylesheet" href="{{ asset('css/addProduct.css?v=1.3') }}">
 @endsection

@@ -44,9 +44,9 @@
                     <th>Category</th>
                     <th>Consign</th>
                     <th>Bundle Qty</th>
-                    <th>Cost</th>
+                    {{--<th>Cost</th>--}}
                     <th>Stock</th>
-                    <th>Supplier</th>
+                    {{--<th>Supplier</th>--}}
                     <th>Image</th>
                     <th>Actions</th>
                 </tr>
@@ -64,9 +64,9 @@
                         <td>{{ $product->Category ?? 'N/A' }}</td>
                         <td>{{ $product->Consign !== null ? number_format($product->Consign, 2) : 'N/A' }}</td>
                         <td>{{ $product->Bundle_Qty ?? 'N/A' }}</td>
-                        <td>{{ number_format($product->Cost ?? 0, 2) }}</td>
+                        {{--<td>{{ number_format($product->Cost ?? 0, 2) }}</td>--}}
                         <td>{{ $product->Stock ?? 'N/A' }}</td>
-                        <td>{{ $product->Supplier ?? 'N/A' }}</td>
+                        {{--<td>{{ $product->Supplier ?? 'N/A' }}</td>--}}
                         <td>
                             @if($product->Image)
                                 <img src="data:image/jpeg;base64,{{ base64_encode($product->Image) }}" alt="Product Image" class="product-image">
@@ -80,8 +80,10 @@
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Delete</button>
                             </form>
-                            <a href="{{ route('product-barcodes.index', ['product_sku' => $product->SKU]) }}" class="btn btn-info">See Barcodes</a>
-                        </td>                                                                     
+                            {{--<a href="{{ route('product-barcodes.index', ['product_sku' => $product->SKU]) }}" class="btn btn-info">See Barcodes</a>--}}
+                            <a href="{{ route('receivedProducts.create', ['product_sku' => $product->SKU]) }}" class="btn btn-secondary">Receive Product</a>
+                        </td>
+                                                                                            
                     </tr>
                 @endforeach
             </tbody>
@@ -95,11 +97,11 @@
     </div>
 
     <!-- public/js/product.js  -->
-    <script src="{{ asset('js/product.js?v=1.2') }}"></script>  
+    <script src="{{ asset('js/product.js?v=1.3') }}"></script>  
 @endsection
 
 @section('styles')
 
     <!-- public/css/homePage.css  -->
-    <link rel="stylesheet" href="{{ asset('css/homePage.css?v=1.2') }}">
+    <link rel="stylesheet" href="{{ asset('css/homePage.css?v=1.3') }}">
 @endsection

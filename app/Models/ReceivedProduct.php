@@ -10,7 +10,7 @@ class ReceivedProduct extends Model
     use HasFactory;
 
     // Specify the table associated with the model
-    protected $table = 'received_products';
+    protected $table = 'usc_received_products';
 
     // Specify the primary key (if different from the default 'id')
     protected $primaryKey = 'id';
@@ -28,6 +28,7 @@ class ReceivedProduct extends Model
         'bale',
         'batch_number',
         'cost',
+        'createdAt'
     ];
 
     // Optionally, you can define casts for attributes

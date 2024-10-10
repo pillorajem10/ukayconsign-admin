@@ -1,0 +1,39 @@
+/* receivedProductList.css */
+
+/* Container styles */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Table styles */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    background-color: #fff;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.table thead th {
+    background-color: green;
+    color: white;
+    text-align: center;
+    padding: 12px;
+}
+
+.table tbody td {
+    text-align: center;
+    padding: 12px;
+}
+
+.btn-group > .action-form {
+    display: inline-block; /* Keep forms inline for spacing */
+    margin-right: 5px; /* Space between buttons */
+}
+
+.btn {
+    min-width: 120px; /* Set a minimum width for consistency */
+}
