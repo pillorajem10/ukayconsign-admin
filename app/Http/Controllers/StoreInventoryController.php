@@ -39,7 +39,7 @@ class StoreInventoryController extends Controller
         }
         
         // Paginate the results
-        $inventory = $query->paginate(1);
+        $inventory = $query->paginate(10);
         return view('pages.storeInventory', compact('inventory', 'stores'));
     }      
 
