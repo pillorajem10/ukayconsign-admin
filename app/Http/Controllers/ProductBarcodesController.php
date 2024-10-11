@@ -11,22 +11,29 @@ class ProductBarcodesController extends Controller
     {
         $productSku = $request->input('product_sku'); // Get the product_sku input
         $receivedProductId = $request->input('received_product_id'); // Get the received_product_id input
-    
+
         // Redirect if either SKU or received_product_id is not provided
         if (empty($productSku) || empty($receivedProductId)) {
             return redirect()->route('products.index')->with('error', 'Both SKU and received product ID must be provided');
         }
-    
-        // Fetch barcodes with pagination, filtered by product_sku and received_product_id
-        $barcodes = ProductBarcode::where('product_sku', $productSku)
-            ->where('received_product_id', $receivedProductId)
-            ->paginate(24);
-    
+
+        // Fetch barcodes with pagination
+        $barcodesQuery = ProductBarcode::where('received_product_id', $receivedProductId);
+
+        // Show all if is_used is false, otherwise filter by product_sku
+        if ($request->input('is_used') === 'false') {
+            // Only apply received_product_id filter
+            $barcodes = $barcodesQuery->paginate(24);
+        } else {
+            // Filter by product_sku as well
+            $barcodes = $barcodesQuery->where('product_sku', $productSku)->paginate(24);
+        }
+
         // Check if any barcodes are found
         if ($barcodes->isEmpty()) {
             return redirect()->route('products.index')->with('error', 'No barcodes found');
         }
-    
+
         return view('pages.productBarcodes', compact('barcodes', 'productSku', 'receivedProductId')); // Pass data to the view
     }       
 }
