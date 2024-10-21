@@ -38,4 +38,10 @@ class Order extends Model
         'order_date' => 'datetime',
         'createdAt' => 'datetime',
     ];
+
+    // Define relationship to User model
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id'); // Specify the foreign key
+    }
 }

@@ -24,8 +24,8 @@ class OrderController extends Controller
     
     public function index(Request $request)
     {
-        $query = Order::query();
-    
+        $query = Order::with('user'); // Eager load the User model
+        
         // Filter by date range if provided
         if ($request->has('start_date') && $request->has('end_date')) {
             // Ensure to include the end of the day for the end date
@@ -34,7 +34,7 @@ class OrderController extends Controller
                 $request->input('end_date') . ' 23:59:59',
             ]);
         }
-    
+        
         $orders = $query->orderBy('createdAt', 'desc')->get(); // Fetch all orders in descending order
         return view('pages.orders', compact('orders')); // Pass the orders to the view
     }    
@@ -42,14 +42,14 @@ class OrderController extends Controller
     public function updateStatus(Request $request, $id)
     {
         $request->validate([
-            'order_status' => 'required|string|in:Processing,Packed,Shipped,Delivered,Canceled',
+            'order_status' => 'required|string|in:Processing,Packed,Shipped,Delivered,Canceled,Approved,Declined',
         ]);
         
         $order = Order::findOrFail($id);
         $order->order_status = $request->order_status;
         $order->save();
     
-        // If order status is "Shipped", update product stock
+        // Handle stock updates and other logic based on order status
         if ($order->order_status === 'Shipped') {
             $productsOrdered = json_decode($order->products_ordered, true);
             
@@ -61,7 +61,7 @@ class OrderController extends Controller
                 $productModel = Product::where('sku', $productSku)->first();
                 if ($productModel) {
                     // Calculate new stock
-                    $newStock = $productModel->Stock - $quantityOrdered;
+                    $newStock = $productModel->stock - $quantityOrdered;
     
                     // Update stock in the database
                     $productModel->stock = $newStock;
@@ -80,5 +80,5 @@ class OrderController extends Controller
         }
     
         return redirect()->route('orders.index')->with('success', 'Order status updated successfully!');
-    }
+    }    
 }

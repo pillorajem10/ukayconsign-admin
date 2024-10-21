@@ -2,6 +2,11 @@
 
 @section('title', 'Orders')
 
+@php
+    use Carbon\Carbon;
+@endphp
+
+
 @section('content')
     <div class="orderpage-loading-overlay" id="orderPageloadingOverlay">
         <div class="orderpage-spinner"></div>
@@ -9,7 +14,6 @@
 
     <div>
         <h1 class="text-center mb-4">Orders</h1>
-        
 
         <form method="GET" action="{{ route('orders.index') }}" class="mb-4">
             <div class="form-row align-items-end">
@@ -26,7 +30,7 @@
                     <a href="{{ route('orders.index') }}" class="btn btn-outline-success mt-4 ml-2">Clear</a>
                 </div>
             </div>
-        </form>              
+        </form>
 
         <div>
             @forelse ($orders as $order)
@@ -38,8 +42,8 @@
                             <h6 class="card-subtitle mb-2 text-muted">Store Name: {{ $order->store_name }}</h6>
                             <p><strong>Email:</strong> {{ $order->email }}</p>
                             <p><strong>Address:</strong> {{ $order->address }}</p>
-                            
-                            <h6 class="mt-3">Products Ordered:</h6>
+
+                            <h6 class="mt-3"><strong>Products Ordered:</strong></h6>
                             <table class="table table-sm mt-2">
                                 <thead>
                                     <tr>
@@ -65,24 +69,27 @@
                                     @endforeach
                                 </tbody>
                             </table>
-                            
+
                             <p class="mt-3"><strong>Total Price:</strong> ₱{{ number_format($order->total_price, 2) }}</p>
-                            <p><strong>Order Date:</strong> {{ $order->order_date }}</p>
+                            <p><strong>Order Date:</strong> {{ Carbon::parse($order->createdAt)->format('F j, Y, g:i A') }}</p>
+                            <p><strong>User Estimated Items Sold Per Month:</strong> {{ $order->user ? $order->user->estimated_items_sold_per_month : 'N/A' }}</p>
                             
                             <form method="POST" action="{{ route('orders.updateStatus', $order->id) }}">
                                 @csrf
                                 @method('PATCH')
                                 <div class="form-group">
-                                    <label for="order-status">Order Status:</label>
+                                    <label for="order-status"><strong>Order Status:</strong></label>
                                     <select name="order_status" class="form-control" onchange="showLoading(); this.form.submit();">
                                         <option value="Processing" {{ $order->order_status == 'Processing' ? 'selected' : '' }}>Processing</option>
                                         <option value="Packed" {{ $order->order_status == 'Packed' ? 'selected' : '' }}>Packed</option>
                                         <option value="Shipped" {{ $order->order_status == 'Shipped' ? 'selected' : '' }}>Shipped</option>
                                         <option value="Delivered" {{ $order->order_status == 'Delivered' ? 'selected' : '' }}>Delivered</option>
                                         <option value="Canceled" {{ $order->order_status == 'Canceled' ? 'selected' : '' }}>Canceled</option>
+                                        <option value="Approved" {{ $order->order_status == 'Approved' ? 'selected' : '' }}>Approved</option>
+                                        <option value="Declined" {{ $order->order_status == 'Declined' ? 'selected' : '' }}>Declined</option>
                                     </select>
                                 </div>
-                            </form>
+                            </form>                            
                         </div>
                     </div>
                 </div>
