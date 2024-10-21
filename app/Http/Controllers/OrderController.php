@@ -22,11 +22,22 @@ class OrderController extends Controller
         $this->middleware('auth'); // Require authentication for all methods in this controller
     }
     
-    public function index()
+    public function index(Request $request)
     {
-        $orders = Order::all(); // Fetch all orders from the database
+        $query = Order::query();
+    
+        // Filter by date range if provided
+        if ($request->has('start_date') && $request->has('end_date')) {
+            // Ensure to include the end of the day for the end date
+            $query->whereBetween('createdAt', [
+                $request->input('start_date') . ' 00:00:00',
+                $request->input('end_date') . ' 23:59:59',
+            ]);
+        }
+    
+        $orders = $query->orderBy('createdAt', 'desc')->get(); // Fetch all orders in descending order
         return view('pages.orders', compact('orders')); // Pass the orders to the view
-    }
+    }    
 
     public function updateStatus(Request $request, $id)
     {

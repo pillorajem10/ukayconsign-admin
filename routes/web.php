@@ -9,6 +9,7 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReceivedProductController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\StoreController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\StoreInventoryController;
 use App\Http\Controllers\ProductBarcodesController;
 
@@ -91,3 +92,6 @@ Route::get('/product-barcodes', [ProductBarcodesController::class, 'index'])->na
 Route::get('/dashboard', function () {
     return view('pages.dashboard'); // Points to your dashboard view
 })->middleware('auth'); // Ensures the user is authenticated
+
+// USERS
+Route::get('/users', [UserController::class, 'index'])->name('users.index');

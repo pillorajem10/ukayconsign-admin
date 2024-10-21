@@ -8,10 +8,6 @@
     margin: 1rem;
 }
 
-.order-card:hover {
-    transform: scale(1.05); /* Slight zoom effect on hover */
-}
-
 .table {
     margin-top: 10px; /* Spacing above tables */
 }

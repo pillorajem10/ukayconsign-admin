@@ -1,0 +1,51 @@
+/* usersList.css */
+
+/* Title Styles */
+.user-list-title {
+    color: #343a40; /* Dark color for headings */
+}
+
+/* Search Form Styles */
+.user-search-form {
+    margin-bottom: 20px; /* Space below the search form */
+}
+
+.user-search-input {
+    border-radius: 0.25rem; /* Rounded corners */
+}
+
+.user-search-button {
+    border-radius: 0.25rem; /* Rounded corners */
+    border: none;
+    background-color: green;
+}
+
+.user-search-button:hover {
+    background-color: darkgreen;
+}
+
+/* Table Styles */
+.user-list-table {
+    background-color: white; /* White background for the table */
+    border-radius: 0.25rem; /* Rounded corners */
+    overflow: hidden; /* Round corners */
+}
+
+.user-list-header {
+    background-color: green; /* Blue background for headers */
+    color: white; /* White text for headers */
+}
+
+.user-list-row:hover {
+    background-color: #e9ecef; /* Light gray on hover */
+}
+
+/* No Name Styles */
+.user-no-name {
+    font-style: italic; /* Italic for "No Name" */
+}
+
+/* Alert Styles */
+.user-no-results {
+    margin-top: 20px; /* Space above alert */
+}

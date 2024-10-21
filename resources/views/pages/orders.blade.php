@@ -9,6 +9,25 @@
 
     <div>
         <h1 class="text-center mb-4">Orders</h1>
+        
+
+        <form method="GET" action="{{ route('orders.index') }}" class="mb-4">
+            <div class="form-row align-items-end">
+                <div class="col-md-4">
+                    <label for="start_date">Start Date:</label>
+                    <input type="date" name="start_date" class="form-control" value="{{ request('start_date') }}">
+                </div>
+                <div class="col-md-4">
+                    <label for="end_date">End Date:</label>
+                    <input type="date" name="end_date" class="form-control" value="{{ request('end_date') }}">
+                </div>
+                <div class="col-md-4">
+                    <button type="submit" class="btn btn-success mt-4">Filter</button>
+                    <a href="{{ route('orders.index') }}" class="btn btn-outline-success mt-4 ml-2">Clear</a>
+                </div>
+            </div>
+        </form>              
+
         <div>
             @forelse ($orders as $order)
                 <div>
@@ -75,9 +94,9 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/orders.js?v=1.6') }}"></script>
+    <script src="{{ asset('js/orders.js?v=1.7') }}"></script>
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/ordersPage.css?v=1.6') }}">
+    <link rel="stylesheet" href="{{ asset('css/ordersPage.css?v=1.7') }}">
 @endsection

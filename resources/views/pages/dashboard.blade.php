@@ -27,5 +27,5 @@
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/dashboard.css?v=1.6') }}">
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css?v=1.7') }}">
 @endsection

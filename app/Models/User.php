@@ -26,6 +26,13 @@ class User extends Authenticatable // Extend from Authenticatable
         'role',
         'verified',
         'verification_token',
+        'fname',
+        'lname',
+        'fb_link',             // Added fb_link
+        'phone_number',        // Added phone_number
+        'government_id_card',  // Updated field name
+        'proof_of_billing',    // Added proof_of_billing
+        'selfie_uploaded',     // Added selfie_uploaded
     ];
 
     // Define hidden attributes (e.g., password)
