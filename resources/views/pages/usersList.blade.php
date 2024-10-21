@@ -25,6 +25,7 @@
                             <th class="user-list-header">ID</th>
                             <th class="user-list-header">Name</th>
                             <th class="user-list-header">Email</th>
+                            <th class="user-list-header">Actions</th> <!-- New column for actions -->
                         </tr>
                     </thead>
                     <tbody>
@@ -39,6 +40,9 @@
                                     @endif
                                 </td>
                                 <td>{{ $user->email }}</td>
+                                <td>
+                                    <a href="{{ route('users.show', $user->id) }}" class="btn btn-success btn-sm">View</a> <!-- View button -->
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

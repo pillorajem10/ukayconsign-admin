@@ -95,3 +95,4 @@ Route::get('/dashboard', function () {
 
 // USERS
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
+Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show'); // Display user details
