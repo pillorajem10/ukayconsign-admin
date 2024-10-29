@@ -73,6 +73,12 @@
                         <label for="Secondary_Img">Secondary Image</label>
                         <input type="file" class="form-control" id="Secondary_Img" name="Secondary_Img">
                     </div>
+
+                    <div class="form-group">
+                        <label for="details_images">Details Images</label>
+                        <input type="file" name="details_images[]" id="details_images" class="form-control" accept="image/*" multiple>
+                    </div>
+                    
                     {{--<div class="form-group">
                         <label for="Cost">Cost</label>
                         <input type="number" step="0.01" class="form-control" id="Cost" name="Cost">

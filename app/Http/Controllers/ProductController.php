@@ -65,12 +65,12 @@ class ProductController extends Controller
             'Supplier' => 'nullable|string|max:255',
             'Image' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
             'Secondary_Img' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'details_images.*' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
             'Img_color' => 'nullable|string|max:255',
             'is_hidden' => 'nullable|boolean',
             'Batch_number' => 'nullable|string|max:255',
             'Bale' => 'nullable|string|max:255',
             'createdAt' => 'nullable|date',
-            'batches' => 'nullable|text',
         ], [
             'SKU.unique' => "{$request->SKU} is already existed in products." // Custom error message
         ]);
@@ -84,6 +84,16 @@ class ProductController extends Controller
         }
         if ($request->hasFile('Secondary_Img')) {
             $product->Secondary_Img = file_get_contents($request->file('Secondary_Img')->getRealPath());
+        }
+    
+        // Handle details images
+        if ($request->hasFile('details_images')) {
+            $detailsImages = [];
+            foreach ($request->file('details_images') as $image) {
+                // Read the file and encode it to Base64
+                $detailsImages[] = base64_encode(file_get_contents($image->getRealPath()));
+            }
+            $product->details_images = json_encode($detailsImages); // Store as JSON
         }
     
         // Generate ProductID from concatenation
@@ -106,7 +116,6 @@ class ProductController extends Controller
         $batchNumber = "{$batchBase}-{$batchSuffix}";
     
         // Create the batch entry
-
         /*
         Batch::create([
             'SKU' => $product->SKU,
@@ -129,8 +138,11 @@ class ProductController extends Controller
         ]);
         */
     
-        // Generate barcodes
-
+        // Update the product to include the batch number
+        $product->Batch_number = $batchNumber; // Add this line
+        $product->save();
+    
+        // Optionally, handle barcode generation here
         /*
         for ($i = 0; $i < $product->Stock; $i++) {
             $barcodeNumber = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT); // Generate a random 6-digit number
@@ -148,15 +160,12 @@ class ProductController extends Controller
                 'batch_number' => $batchNumber,
                 'barcode_image' => $barcodeImage, // Save the barcode image
             ]);
-        }*/
-    
-        // Update the product to include the batch number
-        $product->batches = json_encode([['Batch_number' => $batchNumber]]);
-        $product->Batch_number = $batchNumber; // Add this line
-        $product->save();
+        }
+        */
     
         return redirect()->route('products.index')->with('success', 'Product added successfully!');
     }
+    
        
     
     /**
@@ -172,16 +181,65 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // Find the product by SKU
+        $product = Product::findOrFail($id);
+        
+        // Pass the product data to the view
+        return view('pages.editProduct', compact('product'));
     }
-
+    
     /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
     {
-        //
-    }
+        // Validate the incoming request
+        $validatedData = $request->validate([
+            'Bundle' => 'nullable|string|max:255',
+            'Type' => 'nullable|string|max:50',
+            'Style' => 'nullable|string|max:50',
+            'Color' => 'nullable|string|max:50',
+            'Gender' => 'nullable|string|max:50',
+            'Category' => 'nullable|string|max:50',
+            'Bundle_Qty' => 'nullable|integer',
+            'Consign' => 'nullable|numeric',
+            'SRP' => 'nullable|string|max:50',
+            'PotentialProfit' => 'nullable|numeric',
+            'Image' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'Secondary_Img' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+            'details_images.*' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+    
+        // Find the product by SKU
+        $product = Product::findOrFail($id);
+    
+        // Update product fields
+        $product->fill($validatedData);
+    
+        // Handle image uploads
+        if ($request->hasFile('Image')) {
+            $product->Image = file_get_contents($request->file('Image')->getRealPath());
+        }
+        if ($request->hasFile('Secondary_Img')) {
+            $product->Secondary_Img = file_get_contents($request->file('Secondary_Img')->getRealPath());
+        }
+    
+        // Handle multiple details images
+        if ($request->hasFile('details_images')) {
+            $detailsImages = [];
+            foreach ($request->file('details_images') as $image) {
+                // Read the file and encode it to Base64
+                $detailsImages[] = base64_encode(file_get_contents($image->getRealPath()));
+            }
+            $product->details_images = json_encode($detailsImages); // Store as JSON
+        }
+    
+        // Save the updated product
+        $product->save();
+    
+        return redirect()->route('products.index')->with('success', 'Product updated successfully!');
+    }      
+    
 
     /**
      * Remove the specified resource from storage.

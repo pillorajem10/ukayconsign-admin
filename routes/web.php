@@ -31,6 +31,8 @@ Route::get('/', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
 Route::post('/products', [ProductController::class, 'store'])->name('products.store');
 Route::delete('/products/delete/{product:SKU}', [ProductController::class, 'destroy'])->name('products.destroy');
+Route::get('/products/edit/{product:SKU}', [ProductController::class, 'edit'])->name('products.edit');
+Route::put('/products/update/{product:SKU}', [ProductController::class, 'update'])->name('products.update');
 // Add this route for invalid GET requests
 Route::get('/products/delete/{product}', function() {
     return redirect()->route('products.index')->with('error', 'Invalid request method. Please use the delete action.');

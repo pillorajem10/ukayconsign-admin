@@ -82,8 +82,8 @@
                             </form>
                             {{--<a href="{{ route('product-barcodes.index', ['product_sku' => $product->SKU]) }}" class="btn btn-info">See Barcodes</a>--}}
                             <a href="{{ route('receivedProducts.create', ['product_sku' => $product->SKU]) }}" class="btn btn-secondary">Receive Product</a>
-                        </td>
-                                                                                            
+                            <a href="{{ route('products.edit', $product->SKU) }}" class="btn btn-warning">Update</a> <!-- Add this line -->
+                        </td>                                                            
                     </tr>
                 @endforeach
             </tbody>
