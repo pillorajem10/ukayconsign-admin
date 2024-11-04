@@ -6,8 +6,8 @@
     <div>
         <h1 class="text-center mb-4">Product Barcodes</h1>
         <button onclick="printTable()" class="btn btn-primary mb-3 print-button">Print</button>
-        <div class="table-responsive" id="printableArea">
-            <table class="table table-bordered barcode-table text-center">
+        <div class="table-responsive">
+            <table class="table table-bordered barcode-table text-center" id="printableArea">
                 <tbody>
                     @foreach($barcodes as $index => $barcode)
                         @if($index % 3 == 0)

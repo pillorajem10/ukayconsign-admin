@@ -24,35 +24,18 @@
     margin: 10px 0;
 }
 
-/* Print Styles */
 @media print {
-    body {
-        margin: 0;
-        padding: 0;
+    /* Hide other elements not in printableArea */
+    body * {
+        visibility: hidden;
     }
-
-    .table-responsive {
-        width: 100%;
-        overflow: hidden;
+    #printableArea, #printableArea * {
+        visibility: visible;
     }
-
-    .barcode-table {
-        border: 1px solid #000;
-        font-size: 12px; /* Adjust font size for better fit */
-    }
-
-    .barcode-image {
-        max-width: 80%; /* Ensure images fit well */
-        height: auto;
-    }
-
-    .pagination,
-    .print-button {
-        display: none; /* Hide pagination and buttons when printing */
-    }
-
-    @page {
-        size: A4; /* Specify A4 paper size */
-        margin: 10mm; /* Margin for print */
+    #printableArea {
+        position: absolute;
+        left: 0;
+        top: 0;
     }
 }
+
