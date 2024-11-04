@@ -55,9 +55,9 @@
         </table>
     </div>
 
-    <script src="{{ asset('js/supplier.js?v=1.8') }}"></script>
+    <script src="{{ asset('js/supplier.js?v=1.9') }}"></script>
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/suppliersPage.css?v=1.8') }}">
+    <link rel="stylesheet" href="{{ asset('css/suppliersPage.css?v=1.9') }}">
 @endsection

@@ -84,9 +84,9 @@
 
     <div id="snackbar"></div>
 
-    <script src="{{ asset('js/product.js?v=1.8') }}"></script>
+    <script src="{{ asset('js/product.js?v=1.9') }}"></script>
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/addProduct.css?v=1.8') }}">
+    <link rel="stylesheet" href="{{ asset('css/addProduct.css?v=1.9') }}">
 @endsection
