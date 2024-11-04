@@ -38,10 +38,8 @@ class ReceivedProduct extends Model
         'createdAt' => 'datetime',
     ];
 
-    /*
-        public function product()
-        {
-            return $this->belongsTo(Product::class, 'product_sku', 'SKU');
-        }
-    */
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_sku', 'SKU');
+    }
 }

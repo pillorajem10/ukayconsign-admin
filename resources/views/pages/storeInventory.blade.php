@@ -32,7 +32,7 @@
                     <th>Product ID</th>
                     <th>Stocks</th>
                     <th>Consign</th>
-                    <th>SPR</th>
+                    <th>SRP</th>
                     <th>Store ID</th>
                 </tr>
             </thead>
