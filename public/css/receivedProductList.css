@@ -8,7 +8,7 @@
 }
 
 /* Table styles */
-.table {
+.received-products-table {
     width: 100%;
     margin-bottom: 1rem;
     background-color: #fff;
@@ -17,23 +17,48 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.table thead th {
+.table-header {
     background-color: green;
     color: white;
     text-align: center;
     padding: 12px;
 }
 
-.table tbody td {
+.table-row {
     text-align: center;
+}
+
+.responsive-cell {
     padding: 12px;
 }
 
-.btn-group > .action-form {
+/* Specific styles for buttons */
+.action-buttons > .action-form {
     display: inline-block; /* Keep forms inline for spacing */
     margin-right: 5px; /* Space between buttons */
 }
 
 .btn {
     min-width: 120px; /* Set a minimum width for consistency */
+}
+
+/* Message styles */
+.message-success {
+    margin-bottom: 20px;
+}
+
+.message-error {
+    margin-bottom: 20px;
+}
+
+.voided-label {
+    color: red; /* Color for voided products */
+}
+
+/* Responsive styles */
+@media (max-width: 600px) {
+    .table-header, .responsive-cell {
+        font-size: 12px; /* Lower font size */
+        padding: 8px; /* Lower padding */
+    }
 }

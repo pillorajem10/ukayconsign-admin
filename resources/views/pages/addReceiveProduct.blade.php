@@ -21,7 +21,12 @@
 
         <div class="form-group">
             <label for="supplier">Supplier</label>
-            <input type="text" name="supplier" id="supplier" class="form-control" required>
+            <select name="supplier" id="supplier" class="form-control" required>
+                <option value="" disabled selected>Select a supplier</option>
+                @foreach ($suppliers as $supplier)
+                    <option value="{{ $supplier->supplier_name }}">{{ $supplier->supplier_name }}</option>
+                @endforeach
+            </select>
         </div>
 
         <div class="form-group">

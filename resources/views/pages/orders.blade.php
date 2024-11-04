@@ -101,9 +101,9 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/orders.js?v=2.0') }}"></script>
+    <script src="{{ asset('js/orders.js?v=2.1') }}"></script>
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/ordersPage.css?v=2.0') }}">
+    <link rel="stylesheet" href="{{ asset('css/ordersPage.css?v=2.1') }}">
 @endsection

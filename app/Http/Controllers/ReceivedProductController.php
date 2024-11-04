@@ -6,6 +6,7 @@ use App\Models\ReceivedProduct;
 use App\Models\Product;
 use App\Models\ProductBarcode;
 use App\Models\StoreInventory;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -23,9 +24,12 @@ class ReceivedProductController extends Controller
     
     public function index()
     {
-        $receivedProducts = ReceivedProduct::all(); // Fetch all received products
-        return view('pages.receivedProducts', compact('receivedProducts')); // Pass data to the view
-    }
+        // Fetch all received products, sorted by createdAt in descending order, with pagination
+        $receivedProducts = ReceivedProduct::orderBy('createdAt', 'desc')->paginate(10);
+    
+        // Pass data to the view
+        return view('pages.receivedProducts', compact('receivedProducts'));
+    }       
 
     /**
      * Show the form for creating a new resource.
@@ -33,8 +37,11 @@ class ReceivedProductController extends Controller
     public function create(Request $request)
     {
         $productSku = $request->query('product_sku'); // Get SKU from query
-        return view('pages.addReceiveProduct', compact('productSku')); // Pass SKU to the view
+        $suppliers = Supplier::all(); // Fetch all suppliers
+    
+        return view('pages.addReceiveProduct', compact('productSku', 'suppliers')); // Pass SKU and suppliers to the view
     }
+    
     
 
     /**
