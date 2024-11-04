@@ -16,7 +16,10 @@
                             <td class="barcode-cell" style="padding: 20px;">
                                 @if($barcode->barcode_image)
                                     <img src="data:image/png;base64,{{ base64_encode($barcode->barcode_image) }}" alt="Barcode" class="barcode-image">
-                                    <p class="barcode-number">{{ $barcode->barcode_number }}</p>
+                                    <p class="barcode-number">
+                                        {{ $barcode->barcode_number }} - 
+                                        {{ $barcode->product ? $barcode->product->SRP : 'N/A' }}
+                                    </p>
                                 @else
                                     <span class="no-image">No Image</span>
                                 @endif

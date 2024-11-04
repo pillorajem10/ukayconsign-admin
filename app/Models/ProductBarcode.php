@@ -22,8 +22,11 @@ class ProductBarcode extends Model
         'batch_number',
     ];
 
-    // No hidden attributes
-    // protected $hidden = []; // Optional: leave this out if not hiding anything
+    // Define the relationship to the Product model
+    public function product()
+    {
+        return $this->belongsTo(Product::class, 'product_sku', 'SKU');
+    }
 
     protected $casts = [
         'is_used' => 'boolean',
