@@ -15,11 +15,11 @@
                         @endif
                             <td class="barcode-cell" style="padding: 20px;">
                                 @if($barcode->barcode_image)
-                                    <img src="data:image/png;base64,{{ base64_encode($barcode->barcode_image) }}" alt="Barcode" class="barcode-image">
-                                    <p class="barcode-number">
+                                    <div class="barcode-number">
                                         {{ $barcode->barcode_number }} - 
                                         {{ $barcode->product ? $barcode->product->SRP : 'N/A' }}
-                                    </p>
+                                    </div>
+                                    <img src="data:image/png;base64,{{ base64_encode($barcode->barcode_image) }}" alt="Barcode" class="barcode-image">
                                 @else
                                     <span class="no-image">No Image</span>
                                 @endif
@@ -37,9 +37,9 @@
             </ul>
         </nav>  
     </div>
-    <script src="{{ asset('js/barcodes.js?v=1.9') }}"></script>  
+    <script src="{{ asset('js/barcodes.js?v=2.0') }}"></script>  
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/barcodes.css?v=1.9') }}">
+    <link rel="stylesheet" href="{{ asset('css/barcodes.css?v=2.0') }}">
 @endsection

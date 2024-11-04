@@ -62,5 +62,5 @@
 </div>
 
 <!-- Link to CSS with cache-busting version -->
-<link rel="stylesheet" href="{{ asset('css/storeInv.css?v=1.9') }}">
+<link rel="stylesheet" href="{{ asset('css/storeInv.css?v=2.0') }}">
 @endsection

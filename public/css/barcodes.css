@@ -15,8 +15,9 @@
 }
 
 .barcode-image {
-    max-width: 100%;
-    height: auto;
+    width: 40%;
+    max-height: 30mm; /* Set a maximum height for the barcode image */
+    height: auto; /* Maintain aspect ratio */
 }
 
 /* Button Styling */
@@ -45,10 +46,14 @@
         padding: 0;
     }
 
+    .barcode-image {
+        width: 70%;
+        max-height: 30mm; /* Set a maximum height for the barcode image */
+        height: auto; /* Maintain aspect ratio */
+    }
+
     /* Remove all margins on the printed page */
     @page {
         margin: 0;
     }
 }
-
-
