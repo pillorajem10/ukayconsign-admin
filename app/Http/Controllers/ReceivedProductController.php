@@ -76,7 +76,69 @@ class ReceivedProductController extends Controller
         ]);
     
         return redirect()->route('receivedProducts.index')->with('success', 'Product received successfully!');
-    }    
+    }
+    
+    /*
+        public function store(Request $request)
+        {
+            // Validate the request data
+            $request->validate([
+                'supplier' => 'required|string|max:255',
+                'product_sku' => 'required|string|max:255',
+                'bale' => 'required|string|max:255',
+                'quantity_received' => 'required|integer',
+                'cost' => 'required|numeric',
+            ]);
+        
+            // Find the product using the SKU
+            $product = Product::where('SKU', $request->product_sku)->first();
+        
+            // Check if the product exists
+            if (!$product) {
+                return redirect()->back()->with('error', 'Product not found.');
+            }
+        
+            // Update the product stock
+            $product->Stock += $request->quantity_received;
+            $product->save();
+        
+            // Create a new received product
+            ReceivedProduct::create([
+                'supplier' => $request->supplier,
+                'product_sku' => $request->product_sku,
+                'quantity_received' => $request->quantity_received,
+                'printed_barcodes' => $request->printed_barcodes,
+                'bale' => $request->bale,
+                'is_voided' => $request->is_voided,
+                'batch_number' => $request->batch_number,
+                'cost' => $request->cost,
+                'createdAt' => now()->setTimezone('Asia/Manila'), // Set to Philippine timezone
+            ]);
+        
+            // Update StoreInventory for store_id = 7
+            $storeInventory = StoreInventory::where('SKU', $request->product_sku)
+                ->where('store_id', 7)
+                ->first();
+        
+            // If the store inventory entry exists, update the stocks
+            if ($storeInventory) {
+                $storeInventory->Stocks += $request->quantity_received;
+                $storeInventory->save();
+            } else {
+                // Create a new StoreInventory entry with ProductID, Consign, and SPR from Product
+                StoreInventory::create([
+                    'SKU' => $request->product_sku,
+                    'ProductID' => $product->ProductID, // Assuming ProductID is a field in the Product model
+                    'Stocks' => $request->quantity_received,
+                    'Consign' => $product->Consign, // Use the Consign from the Product model
+                    'SPR' => $product->SRP, // Use the SRP from the Product model
+                    'store_id' => 7,
+                ]);
+            }
+        
+            return redirect()->route('receivedProducts.index')->with('success', 'Product received successfully!');
+        }
+    */
 
     /**
      * Display the specified resource.
