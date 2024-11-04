@@ -1,8 +1,11 @@
 function printTable() {
-    var printContents = document.getElementById('printableArea').innerHTML;
-    var originalContents = document.body.innerHTML;
+    const printContents = document.getElementById('printableArea').innerHTML;
+    const originalContents = document.body.innerHTML;
+
     document.body.innerHTML = printContents;
     window.print();
     document.body.innerHTML = originalContents;
-    location.reload(); // Refresh to restore the original content
+
+    // Reattach event listeners if needed after resetting the document body
+    location.reload();
 }
