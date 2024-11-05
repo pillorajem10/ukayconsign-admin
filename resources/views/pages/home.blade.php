@@ -75,15 +75,14 @@
                             @endif
                         </td>
                         <td class="button-stack">
-                            <form action="{{ route('products.destroy', $product->SKU) }}" method="POST">
+                            <form action="{{ route('products.destroy', $product->SKU) }}" method="POST" id="delete-form-{{ $product->SKU }}" style="display: inline;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="btn btn-danger">Delete</button>
+                                <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product? This action cannot be undone.')">Delete</button>
                             </form>
-                            {{--<a href="{{ route('product-barcodes.index', ['product_sku' => $product->SKU]) }}" class="btn btn-info">See Barcodes</a>--}}
                             <a href="{{ route('receivedProducts.create', ['product_sku' => $product->SKU]) }}" class="btn btn-secondary">Receive Product</a>
-                            <a href="{{ route('products.edit', $product->SKU) }}" class="btn btn-warning">Update</a> <!-- Add this line -->
-                        </td>                                                            
+                            <a href="{{ route('products.edit', $product->SKU) }}" class="btn btn-warning">Update</a>
+                        </td>                                                                                    
                     </tr>
                 @endforeach
             </tbody>
