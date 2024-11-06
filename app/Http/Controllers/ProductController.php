@@ -24,13 +24,28 @@ class ProductController extends Controller
 
     public function index(Request $request)
     {
-        $search = $request->input('search'); // Get the search input
+        // Get the search input from the request
+        $search = $request->input('search');
+        $page = $request->input('page', 1); // Default to page 1 if not provided
+    
+        // Store search term and current page in session
+        if ($search) {
+            session(['search' => $search]);
+        }
+        if ($page) {
+            session(['page' => $page]);
+        }
+    
+        // Fetch products with pagination, apply search filter if provided
         $products = Product::when($search, function ($query) use ($search) {
             return $query->where('ProductID', 'like', '%' . $search . '%');
-        })->paginate(10); // Fetch products with pagination
+        })->paginate(10);
     
-        return view('pages.home', compact('products', 'search')); // Pass data to the view
+        // Return the view with products, search term, and current page
+        return view('pages.home', compact('products', 'search', 'page'));
     }
+    
+    
       
 
     /**
@@ -163,7 +178,10 @@ class ProductController extends Controller
         }
         */
     
-        return redirect()->route('products.index')->with('success', 'Product added successfully!');
+        return redirect()->route('products.index', [
+            'search' => session('search'), 
+            'page' => session('page', 1)  // Default to page 1 if not found in the session
+        ])->with('success', 'Product added successfully!');
     }
     
        
@@ -216,7 +234,7 @@ class ProductController extends Controller
         // Update product fields
         $product->fill($validatedData);
     
-        // Handle image uploads
+        // Handle image uploads (same logic as before)
         if ($request->hasFile('Image')) {
             $product->Image = file_get_contents($request->file('Image')->getRealPath());
         }
@@ -237,8 +255,16 @@ class ProductController extends Controller
         // Save the updated product
         $product->save();
     
-        return redirect()->route('products.index')->with('success', 'Product updated successfully!');
-    }      
+        // After updating the product, we redirect back to the product list
+        // and append the search term and page from the session to the URL
+        return redirect()->route('products.index', [
+            'search' => session('search'), 
+            'page' => session('page', 1)  // Default to page 1 if not found in the session
+        ])->with('success', 'Product updated successfully!');
+    }
+    
+    
+        
     
 
     /**
@@ -258,6 +284,9 @@ class ProductController extends Controller
         // Delete the product
         $product->delete();
     
-        return redirect()->route('products.index')->with('success', 'Product deleted successfully!');
+        return redirect()->route('products.index', [
+            'search' => session('search'), 
+            'page' => session('page', 1)  // Default to page 1 if not found in the session
+        ])->with('success', 'Product deleted successfully!');
     }         
 }
