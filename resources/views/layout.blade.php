@@ -147,6 +147,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/store-inventory">Store Inventory</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/usc-returns">Returned Items</a>
+                    </li>
                 @endif
             </ul>
         </div>
