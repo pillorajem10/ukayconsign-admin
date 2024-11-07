@@ -49,7 +49,7 @@ class OrderController extends Controller
         $order->order_status = $request->order_status;
         $order->save();
     
-        // Handle stock updates and other logic based on order status
+        // Handle Stock updates and other logic based on order status
         if ($order->order_status === 'Shipped') {
             $productsOrdered = json_decode($order->products_ordered, true);
             
@@ -60,11 +60,11 @@ class OrderController extends Controller
                 // Find the product by SKU
                 $productModel = Product::where('sku', $productSku)->first();
                 if ($productModel) {
-                    // Calculate new stock
-                    $newStock = $productModel->stock - $quantityOrdered;
+                    // Calculate new Stock
+                    $newStock = $productModel->Stock - $quantityOrdered;
     
-                    // Update stock in the database
-                    $productModel->stock = $newStock;
+                    // Update Stock in the database
+                    $productModel->Stock = $newStock;
                     $productModel->save();
                 }
             }
