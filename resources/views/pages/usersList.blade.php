@@ -53,5 +53,5 @@
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/usersList.css?v=2.1') }}">
+    <link rel="stylesheet" href="{{ asset('css/usersList.css?v=2.2') }}">
 @endsection

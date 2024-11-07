@@ -160,8 +160,8 @@
 @media (max-width: 768px) {
     .custom-table th, 
     .custom-table td {
-        font-size: 12px; /* Font size for table cells */
-        padding: 8px; /* Reduced padding */
+        font-size: 10px; /* Font size for table cells */
+        padding: 5px; /* Reduced padding */
     }
 
     .custom-table .product-image {
