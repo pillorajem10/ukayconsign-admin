@@ -150,6 +150,9 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/usc-returns">Returned Items</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/billings">Billings</a>
+                    </li>
                 @endif
             </ul>
         </div>
