@@ -13,6 +13,7 @@ use App\Http\Controllers\UscReturnController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\StoreInventoryController;
 use App\Http\Controllers\ProductBarcodesController;
+use App\Http\Controllers\BillingController;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -103,3 +104,8 @@ Route::post('/usc-returns/update-status', [UscReturnController::class, 'updateSt
 // USERS
 Route::get('/users', [UserController::class, 'index'])->name('users.index');
 Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show'); // Display user details
+
+// BILLING
+Route::get('/billings', [BillingController::class, 'index'])->name('billings.index');
+Route::get('/billings/{id}', [BillingController::class, 'show'])->name('billings.show');
+Route::put('/billings/{id}/update-payment', [BillingController::class, 'updatePayment'])->name('billings.updatePayment');
