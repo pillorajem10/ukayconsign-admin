@@ -30,8 +30,8 @@ class UscReturnController extends Controller
         // Validate the request data to ensure the return ID exists and the return status is valid
         $validated = $request->validate([
             'return_id' => 'required|exists:usc_returns,id',  // Ensure the return exists in the 'usc_returns' table
-            'return_status' => 'required|in:Processing,Shipped,Received',  // Ensure the status is one of the valid options
-        ]);
+            'return_status' => 'required|in:Processing,Shipped,Received,Packed Back To Store,Shipped Back To Store,Received By Store',  // Ensure the status is one of the valid options
+        ]);        
     
         // Find the return request from the database
         $return = UscReturn::find($validated['return_id']);
@@ -79,6 +79,45 @@ class UscReturnController extends Controller
             } else {
                 // If no product record is found, return an error message
                 return redirect()->route('usc-returns.index')->with('error', 'Product not found.');
+            }
+        }
+
+        if ($return->return_status == 'Shipped Back To Store') {
+            // Get the product SKU and the quantity to add
+            $productSku = $return->product_sku;
+            $quantityToSub = $return->quantity;
+    
+            // Find the product record using the product SKU
+            $product = Product::where('SKU', $productSku)->first();
+    
+            // If the product exists, add the quantity to the Stock
+            if ($product) {
+                $product->Stock -= $quantityToSub;
+                $product->save();  // Save the updated product stock
+            } else {
+                // If no product record is found, return an error message
+                return redirect()->route('usc-returns.index')->with('error', 'Product not found.');
+            }
+        }
+
+        if ($return->return_status == 'Received By Store') {
+            // Get the store_id, product_sku (from the return), and quantity to subtract
+            $storeId = $return->store_id;
+            $productSku = $return->product_sku;
+            $quantityToAdd = $return->quantity;
+    
+            // Find the corresponding inventory record based on store_id and product_sku
+            $inventory = StoreInventory::where('store_id', $storeId)
+                                        ->where('SKU', $productSku)  // Assuming the inventory table uses 'SKU' field for product identifier
+                                        ->first();
+    
+            // If an inventory record is found, subtract the return quantity from the stock
+            if ($inventory) {
+                $inventory->Stocks += $quantityToAdd;
+                $inventory->save();  // Save the updated inventory stock
+            } else {
+                // If no inventory record is found, return an error message
+                return redirect()->route('usc-returns.index')->with('error', 'Inventory record not found.');
             }
         }
     

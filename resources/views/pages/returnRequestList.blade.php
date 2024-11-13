@@ -45,7 +45,10 @@
                                         <option value="Processing" {{ $return->return_status == 'Processing' ? 'selected' : '' }}>Processing</option>
                                         <option value="Shipped" {{ $return->return_status == 'Shipped' ? 'selected' : '' }}>Shipped</option>
                                         <option value="Received" {{ $return->return_status == 'Received' ? 'selected' : '' }}>Received</option>
-                                    </select>
+                                        <option value="Packed Back To Store" {{ $return->return_status == 'Packed Back To Store' ? 'selected' : '' }}>Packed Back To Store</option>
+                                        <option value="Shipped Back To Store" {{ $return->return_status == 'Shipped Back To Store' ? 'selected' : '' }}>Shipped Back To Store</option>
+                                        <option value="Received By Store" {{ $return->return_status == 'Received By Store' ? 'selected' : '' }}>Received By Store</option>
+                                    </select>                                                                   
                                 </form>                                
                             </td>
 
