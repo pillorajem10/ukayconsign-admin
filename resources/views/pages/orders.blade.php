@@ -47,11 +47,12 @@
                             <table class="table table-sm mt-2">
                                 <thead>
                                     <tr>
-                                        <th>Cart ID</th>
+                                        <th class="d-none">Cart ID</th>
                                         <th>Bundle Name</th>
                                         <th>Category</th>
                                         <th>Quantity</th>
                                         <th>Price</th>
+                                        <th>Action</th> <!-- Add an Action column for Edit and Save -->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -59,17 +60,27 @@
                                         $products = json_decode($order->products_ordered, true);
                                     @endphp
                                     @foreach ($products as $product)
-                                        <tr>
-                                            <td>{{ $product['cart_id'] }}</td>
+                                        <tr id="product-row-{{ $product['cart_id'] }}">
+                                            <!-- Pass order_id and cart_id -->
+                                            <td class="d-none">{{ $product['cart_id'] }}</td>
                                             <td>{{ $product['bundle_name'] }}</td>
                                             <td>{{ $product['category'] }}</td>
-                                            <td>{{ $product['quantity'] }}</td>
+                                            <td>
+                                                <span id="quantity-display-{{ $order->id }}-{{ $product['cart_id'] }}">{{ $product['quantity'] }}</span>
+                                                <input type="number" id="quantity-input-{{ $order->id }}-{{ $product['cart_id'] }}" value="{{ $product['quantity'] }}" class="form-control" style="display: none;">
+                                            </td>                                            
                                             <td>₱{{ number_format($product['price'], 2) }}</td>
+                                            <td>
+                                                <div class="actions-products-ordered">
+                                                    <button class="btn btn-sm btn-primary" onclick="editQuantity({{ $loop->index }}, {{ $order->id }}, '{{ $product['cart_id'] }}')" id="edit-button-{{ $order->id }}-{{ $product['cart_id'] }}">Edit</button>
+                                                    <button class="btn btn-sm btn-success" onclick="saveQuantity({{ $order->id }}, '{{ $product['cart_id'] }}')" id="save-button-{{ $order->id }}-{{ $product['cart_id'] }}" style="display: none;">Save</button>
+                                                    <button class="btn btn-sm btn-secondary" onclick="cancelEdit({{ $loop->index }}, {{ $order->id }}, '{{ $product['cart_id'] }}')" id="cancel-button-{{ $order->id }}-{{ $product['cart_id'] }}" style="display: none;">Cancel</button>
+                                                </div>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>
-                            </table>
-
+                            </table>                                                                                                             
                             <p class="mt-3"><strong>Total Price:</strong> ₱{{ number_format($order->total_price, 2) }}</p>
                             <p><strong>Order Date:</strong> {{ Carbon::parse($order->createdAt)->format('F j, Y, g:i A') }}</p>
                             <p><strong>User Estimated Items Sold Per Month:</strong> {{ $order->user ? $order->user->estimated_items_sold_per_month : 'N/A' }}</p>
@@ -101,9 +112,9 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/orders.js?v=2.3') }}"></script>
+    <script src="{{ asset('js/orders.js?v=2.4') }}"></script>
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/ordersPage.css?v=2.3') }}">
+    <link rel="stylesheet" href="{{ asset('css/ordersPage.css?v=2.4') }}">
 @endsection

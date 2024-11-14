@@ -80,5 +80,49 @@ class OrderController extends Controller
         }
     
         return redirect()->route('orders.index')->with('success', 'Order status updated successfully!');
-    }    
+    }   
+    
+    public function updateQuantity(Request $request)
+    {
+        // Validate the incoming request data
+        $request->validate([
+            'updated_product' => 'required|string',
+        ]);
+    
+        // Decode the updated product data from the request
+        $updatedProductData = json_decode($request->input('updated_product'), true);
+    
+        // Find the order by its ID
+        $order = Order::findOrFail($updatedProductData['order_id']);
+    
+        // Decode the products_ordered field (JSON)
+        $productsOrdered = json_decode($order->products_ordered, true);
+    
+        // Initialize a variable to store the total price
+        $newTotalPrice = 0;
+    
+        // Loop through the products to find the one to update and recalculate the total price
+        foreach ($productsOrdered as $index => $product) {
+            // If the cart_id matches the updated product, update the quantity
+            if ($product['cart_id'] == $updatedProductData['cart_id']) {
+                // Update the quantity of the product
+                $productsOrdered[$index]['quantity'] = $updatedProductData['quantity'];
+            }
+    
+            // Calculate the subtotal for the current product (quantity * price)
+            $subtotal = $productsOrdered[$index]['quantity'] * $productsOrdered[$index]['price'];
+    
+            // Add the product's subtotal to the new total price
+            $newTotalPrice += $subtotal;
+        }
+    
+        // Save the updated products_ordered JSON back to the order
+        $order->products_ordered = json_encode($productsOrdered);
+        $order->total_price = $newTotalPrice;  // Update the total price
+        $order->save();
+    
+        // Redirect back to the orders list page with a success message
+        return redirect()->route('orders.index')->with('success', 'Order Quantity Updated Successfully!');
+    }
+         
 }

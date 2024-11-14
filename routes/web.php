@@ -46,6 +46,8 @@ Route::get('/products/update/{product}', function() {
 // ORDERS (transactions) ROUTES
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::patch('/orders/{id}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+Route::post('/orders/update-quantity', [OrderController::class, 'updateQuantity'])->name('orders.updateQuantity');
+
 
 
 // RECEIVED PRODUCTS
