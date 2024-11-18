@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\User;
 use App\Models\Product;
+use App\Models\StoreInventory;
 use Illuminate\Support\Facades\Auth;
 
 use App\Mail\AdminOrderStatus;
@@ -41,18 +42,23 @@ class OrderController extends Controller
 
     public function updateStatus(Request $request, $id)
     {
+        // Validate the request input for order status
         $request->validate([
             'order_status' => 'required|string|in:Processing,Packed,Shipped,Delivered,Canceled,Approved,Declined',
         ]);
         
+        // Find the order by ID
         $order = Order::findOrFail($id);
+        
+        // Update the order status
         $order->order_status = $request->order_status;
         $order->save();
-    
-        // Handle Stock updates and other logic based on order status
+        
+        // Handle logic when the order status is 'Shipped'
         if ($order->order_status === 'Shipped') {
             $productsOrdered = json_decode($order->products_ordered, true);
             
+            // Iterate over the products ordered
             foreach ($productsOrdered as $product) {
                 $productSku = $product['product_sku'];
                 $quantityOrdered = $product['quantity'];
@@ -62,7 +68,7 @@ class OrderController extends Controller
                 if ($productModel) {
                     // Calculate new Stock
                     $newStock = $productModel->Stock - $quantityOrdered;
-    
+        
                     // Update Stock in the database
                     $productModel->Stock = $newStock;
                     $productModel->save();
@@ -70,17 +76,114 @@ class OrderController extends Controller
             }
         }
     
-        // Send email to the customer
-        Mail::to($order->email)->send(new AdminOrderStatus($order));
-    
-        // Notify all admin users about the status update
-        $adminUsers = User::where('role', 'admin')->get();
-        foreach ($adminUsers as $admin) {
-            Mail::to($admin->email)->send(new AdminNotificationsForOrderStatus($order));
+        // Handle inventory update when the order status is 'Delivered'
+        if ($order->order_status === 'Delivered') {
+            // Decode the JSON string into an array of products ordered
+            $productsOrdered = json_decode($order->products_ordered, true);
+            
+            // Check if decoding was successful and if it's an array
+            if (is_array($productsOrdered)) {
+                foreach ($productsOrdered as $product) {
+                    // Check if SKU already exists in StoreInventory for the specific store
+                    $inventoryItem = StoreInventory::where('SKU', $product['product_sku'])
+                        ->where('store_id', $product['store_id']) // Ensure we match store ID
+                        ->first();
+                    
+                    if ($inventoryItem) {
+                        // If it exists, update the Stocks
+                        $inventoryItem->Stocks += $product['quantity'];
+                        $inventoryItem->save();
+                    } else {
+                        // If it doesn't exist, create a new record in StoreInventory
+                        StoreInventory::create([
+                            'SKU' => $product['product_sku'],
+                            'ProductID' => $product['product_id'],
+                            'Stocks' => $product['quantity'],
+                            'Consign' => $product['product_consign'],
+                            'SPR' => $product['product_srp'],
+                            'store_id' => $product['store_id'],
+                        ]);
+                    }
+                }
+            } else {
+                // Handle error if products_ordered is not valid JSON or not an array
+                return redirect()->route('orders.index')->with('error', 'Invalid product data format!');
+            }
         }
     
+        // Notify all admin users about the status update (email functionality can be added later)
+        $adminUsers = User::where('role', 'admin')->get();
+        foreach ($adminUsers as $admin) {
+            // Send notifications (emails can be configured)
+            // Mail::to($admin->email)->send(new AdminNotificationsForOrderStatus($order));
+        }
+    
+        // Redirect back with success message
         return redirect()->route('orders.index')->with('success', 'Order status updated successfully!');
-    }   
+    }
+
+    public function uploadProofOfReceive(Request $request, $id)
+    {
+        // Validate the uploaded file
+        $request->validate([
+            'proof_of_receive' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // Limit size and allow image types
+        ]);
+
+        // Find the order by ID
+        $order = Order::findOrFail($id);
+
+        // Get the uploaded image file
+        $image = $request->file('proof_of_receive');
+
+        // Read the image as binary data and convert to base64
+        $imageData = file_get_contents($image->getRealPath());
+        $base64Image = base64_encode($imageData); // Convert image to base64
+
+        // Save the base64 image to the database in the proof_of_receive column
+        $order->proof_of_receive = $base64Image;
+
+        // Update the order status to "Delivered"
+        $order->order_status = 'Delivered';
+        
+        // Decode the products_ordered JSON and update the inventory
+        $productsOrdered = json_decode($order->products_ordered, true);
+        
+        // Check if decoding was successful and if it's an array
+        if (is_array($productsOrdered)) {
+            foreach ($productsOrdered as $product) {
+                // Check if SKU already exists in StoreInventory for the specific store
+                $inventoryItem = StoreInventory::where('SKU', $product['product_sku'])
+                    ->where('store_id', $product['store_id']) // Ensure we match store ID
+                    ->first();
+                
+                if ($inventoryItem) {
+                    // If it exists, update the Stocks
+                    $inventoryItem->Stocks += $product['quantity'];
+                    $inventoryItem->save();
+                } else {
+                    // If it doesn't exist, create a new record in StoreInventory
+                    StoreInventory::create([
+                        'SKU' => $product['product_sku'],
+                        'ProductID' => $product['product_id'],
+                        'Stocks' => $product['quantity'],
+                        'Consign' => $product['product_consign'],
+                        'SPR' => $product['product_srp'],
+                        'store_id' => $product['store_id'],
+                    ]);
+                }
+            }
+        } else {
+            // Handle error if products_ordered is not valid JSON or not an array
+            return redirect()->route('orders.index')->with('error', 'Invalid product data format!');
+        }
+
+        // Save the updated order with proof of receipt and order status
+        $order->save();
+
+        // Redirect back with success message
+        return redirect()->route('orders.index')->with('success', 'Proof of receipt uploaded successfully and order status updated to Delivered.');
+    }
+      
     
     public function updateQuantity(Request $request)
     {

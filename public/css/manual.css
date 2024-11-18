@@ -1,0 +1,86 @@
+/* General Styles */
+.manual-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.manual-intro {
+    font-size: 1.25rem;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.manual-step {
+    margin-bottom: 30px;
+}
+
+.step-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #0056b3;
+}
+
+.step-description {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.step-list {
+    list-style-type: disc;
+    margin-left: 20px;
+    font-size: 1rem;
+}
+
+.step-image {
+    max-width: 100%;
+    height: auto;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+/* Image Styling */
+.step-image {
+    display: block;
+    margin: 20px auto;
+    border-radius: 8px;
+}
+
+/* Alert Styling */
+.manual-warning {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #856404;
+    background-color: #fff3cd;
+    border-color: #ffeeba;
+    padding: 10px;
+    margin-top: 30px;
+}
+
+/* Media Query for Small Screens (below 400px) */
+@media (max-width: 400px) {
+    .manual-title {
+        font-size: 1.5rem;
+    }
+
+    .manual-intro {
+        font-size: 1rem;
+    }
+
+    .step-title {
+        font-size: 1.25rem;
+    }
+
+    .step-description {
+        font-size: 0.9rem;
+    }
+
+    .step-list {
+        font-size: 0.9rem;
+    }
+
+    .manual-warning {
+        font-size: 0.9rem;
+    }
+}

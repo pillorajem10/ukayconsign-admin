@@ -38,6 +38,8 @@
             color: white !important;
             padding: 10px 15px;
             transition: background-color 0.3s;
+            font-size: .7rem;
+            font-weight: bold
         }
 
         .navbar-nav .nav-link:hover {
@@ -152,6 +154,9 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="/billings">Billings</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/manual">Manual</a>
                     </li>
                 @endif
             </ul>

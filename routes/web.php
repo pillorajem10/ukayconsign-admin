@@ -14,6 +14,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\StoreInventoryController;
 use App\Http\Controllers\ProductBarcodesController;
 use App\Http\Controllers\BillingController;
+use App\Http\Controllers\ManualController;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -46,6 +47,7 @@ Route::get('/products/update/{product}', function() {
 // ORDERS (transactions) ROUTES
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::patch('/orders/{id}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+Route::post('/orders/{id}/uploadproof', [OrderController::class, 'uploadProofOfReceive'])->name('orders.uploadProofOfReceive');
 Route::post('/orders/update-quantity', [OrderController::class, 'updateQuantity'])->name('orders.updateQuantity');
 
 
@@ -111,3 +113,6 @@ Route::get('/users/{id}', [UserController::class, 'show'])->name('users.show'); 
 Route::get('/billings', [BillingController::class, 'index'])->name('billings.index');
 Route::get('/billings/{id}', [BillingController::class, 'show'])->name('billings.show');
 Route::put('/billings/{id}/update-payment', [BillingController::class, 'updatePayment'])->name('billings.updatePayment');
+
+// MANUAL
+Route::get('/manual', [ManualController::class, 'index'])->name('manual.index');

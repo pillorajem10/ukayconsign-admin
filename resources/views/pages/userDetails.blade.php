@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/userDetails.js?v=2.4') }}"></script>
+    <script src="{{ asset('js/userDetails.js?v=2.5') }}"></script>
 </div>
 @endsection
 

@@ -91,16 +91,64 @@
                                 <div class="form-group">
                                     <label for="order-status"><strong>Order Status:</strong></label>
                                     <select name="order_status" class="form-control" onchange="showLoading(); this.form.submit();">
-                                        <option value="Processing" {{ $order->order_status == 'Processing' ? 'selected' : '' }}>Processing</option>
-                                        <option value="Packed" {{ $order->order_status == 'Packed' ? 'selected' : '' }}>Packed</option>
-                                        <option value="Shipped" {{ $order->order_status == 'Shipped' ? 'selected' : '' }}>Shipped</option>
-                                        <option value="Delivered" {{ $order->order_status == 'Delivered' ? 'selected' : '' }}>Delivered</option>
-                                        <option value="Canceled" {{ $order->order_status == 'Canceled' ? 'selected' : '' }}>Canceled</option>
-                                        <option value="Approved" {{ $order->order_status == 'Approved' ? 'selected' : '' }}>Approved</option>
-                                        <option value="Declined" {{ $order->order_status == 'Declined' ? 'selected' : '' }}>Declined</option>
+        
+                                        <!-- If the order status is "Processing", show "Processing", "Packed", "Canceled" -->
+                                        @if ($order->order_status == 'Processing')
+                                            <option value="Processing" selected>Processing</option>
+                                            <option value="Packed" {{ $order->order_status == 'Packed' ? 'selected' : '' }}>Packed</option>
+                                            <option value="Canceled" {{ $order->order_status == 'Canceled' ? 'selected' : '' }}>Canceled</option>
+                                        @endif
+                                
+                                        <!-- If the order status is "Packed", show "Processing", "Packed", "Shipped", "Canceled" -->
+                                        @if ($order->order_status == 'Packed')
+                                            <option value="Processing" {{ $order->order_status == 'Processing' ? 'selected' : '' }}>Processing</option>
+                                            <option value="Packed" selected>Packed</option>
+                                            <option value="Shipped" {{ $order->order_status == 'Shipped' ? 'selected' : '' }}>Shipped</option>
+                                            <option value="Canceled" {{ $order->order_status == 'Canceled' ? 'selected' : '' }}>Canceled</option>
+                                        @endif
+                                
+                                        <!-- If the order status is "Shipped", show "Processing", "Packed", "Shipped", "Delivered", "Canceled" -->
+                                        @if ($order->order_status == 'Shipped')
+                                            <option value="Processing" {{ $order->order_status == 'Processing' ? 'selected' : '' }}>Processing</option>
+                                            <option value="Packed" {{ $order->order_status == 'Packed' ? 'selected' : '' }}>Packed</option>
+                                            <option value="Shipped" selected>Shipped</option>
+                                            {{--<option value="Delivered" {{ $order->order_status == 'Delivered' ? 'selected' : '' }}>Delivered</option>--}}
+                                            <option value="Canceled" {{ $order->order_status == 'Canceled' ? 'selected' : '' }}>Canceled</option>
+                                        @endif
+                                
+                                        <!-- If the order status is "Delivered", show only "Delivered" -->
+                                        @if ($order->order_status == 'Delivered')
+                                            <option value="Delivered" selected>Delivered</option>
+                                        @endif
+                                
+                                        <!-- If the order status is "Canceled", show only "Canceled" -->
+                                        @if ($order->order_status == 'Canceled')
+                                            <option value="Canceled" selected>Canceled</option>
+                                        @endif
+                                
                                     </select>
+                                    
                                 </div>
-                            </form>                            
+                            </form>
+                            
+                            @if ($order->order_status === 'Shipped') 
+                                <form method="POST" action="{{ route('orders.uploadProofOfReceive', $order->id) }}" enctype="multipart/form-data">
+                                    @csrf
+                                    <div class="form-group">
+                                        <label for="proof_of_receive"><strong>Upload Proof of Receive (Image):</strong></label>
+                                        <input type="file" name="proof_of_receive" accept="image/*" class="form-control">
+                                    </div>
+                                    <button type="submit" class="btn btn-success">Upload Proof</button>
+                                </form>
+                            @endif
+
+                            @if ($order->order_status === 'Delivered' && $order->proof_of_receive)  
+                                <!-- Display the proof of receive image if the order is delivered -->
+                                <div class="mt-4">
+                                    <h6><strong>Proof of Receive:</strong></h6>
+                                    <img src="data:image/jpeg;base64,{{ $order->proof_of_receive }}" alt="Proof of Receive" class="proof-image">
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -112,9 +160,9 @@
         </div>
     </div>
 
-    <script src="{{ asset('js/orders.js?v=2.4') }}"></script>
+    <script src="{{ asset('js/orders.js?v=2.5') }}"></script>
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/ordersPage.css?v=2.4') }}">
+    <link rel="stylesheet" href="{{ asset('css/ordersPage.css?v=2.5') }}">
 @endsection
