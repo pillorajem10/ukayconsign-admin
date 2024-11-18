@@ -41,4 +41,11 @@ class Order extends Model
         'createdAt' => 'datetime',
         'proof_of_receive' => 'binary', // If you want to cast the proof_of_receive to binary
     ];
+
+    // Define the relationship to the User model
+    public function user()
+    {
+        // Assuming 'user_id' is the foreign key in the 'orders' table and 'id' is the primary key in the 'users' table
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }
