@@ -25,11 +25,13 @@ class Order extends Model
         'user_id',
         'products_ordered',
         'address',
+        'store_name',
         'email',
         'total_price',
         'order_date',
         'order_status',
         'createdAt',
+        'proof_of_receive', // Added the proof_of_receive column for mass assignment
     ];
 
     // Optionally, define casts for attributes
@@ -37,11 +39,6 @@ class Order extends Model
         'total_price' => 'decimal:2',
         'order_date' => 'datetime',
         'createdAt' => 'datetime',
+        'proof_of_receive' => 'binary', // If you want to cast the proof_of_receive to binary
     ];
-
-    // Define relationship to User model
-    public function user()
-    {
-        return $this->belongsTo(User::class, 'user_id'); // Specify the foreign key
-    }
 }
