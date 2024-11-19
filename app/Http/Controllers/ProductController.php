@@ -27,11 +27,16 @@ class ProductController extends Controller
         // Get the search input from the request
         $search = $request->input('search');
         $page = $request->input('page', 1); // Default to page 1 if not provided
-    
-        // Store search term and current page in session
-        if ($search) {
+        
+        // Clear the search session if the search is empty
+        if (empty($search)) {
+            session()->forget('search');
+        } else {
+            // Store search term and current page in session if search is present
             session(['search' => $search]);
         }
+    
+        // Store current page in session
         if ($page) {
             session(['page' => $page]);
         }
@@ -43,8 +48,7 @@ class ProductController extends Controller
     
         // Return the view with products, search term, and current page
         return view('pages.home', compact('products', 'search', 'page'));
-    }
-    
+    }    
     
       
 

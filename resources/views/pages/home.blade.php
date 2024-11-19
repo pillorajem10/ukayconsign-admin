@@ -11,9 +11,9 @@
         <div>
             <form action="{{ route('products.index') }}" method="GET" class="form-inline">
                 <button type="submit" class="btn btn-custom-search mr-2">Search</button>
-                <a href="{{ route('products.index') }}" class="btn btn-custom-search mr-2">Clear Search</a>
+                <a href="{{ route('products.index') }}?search=&page={{ request()->input('page', 1) }}" class="btn btn-custom-search mr-2">Clear Search</a>
                 <input type="text" name="search" value="{{ session('search') }}" class="form-control" placeholder="Search by Product ID" aria-label="Search">
-            </form>
+            </form>            
         </div>        
     </div>
 
