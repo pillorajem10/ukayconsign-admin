@@ -149,7 +149,7 @@
                                     {{--@if ($order->proof_of_receive)
                                         <img src="data:image/jpeg;base64,{{ $order->proof_of_receive }}" alt="Proof of Receive" class="proof-image">
                                     @endif--}}
-                                    <img src="data:image/jpeg;base64,{{ $order->proof_of_receive }}" alt="Proof of Receive" class="proof-image">
+                                    {{--<img src="data:image/jpeg;base64,{{ $order->proof_of_receive }}" alt="Proof of Receive" class="proof-image">--}}
                                 </div>
                             @endif
                         </div>
