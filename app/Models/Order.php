@@ -38,8 +38,7 @@ class Order extends Model
     protected $casts = [
         'total_price' => 'decimal:2',
         'order_date' => 'datetime',
-        'createdAt' => 'datetime',
-        'proof_of_receive' => 'binary', // If you want to cast the proof_of_receive to binary
+        'createdAt' => 'datetime'
     ];
 
     // Define the relationship to the User model

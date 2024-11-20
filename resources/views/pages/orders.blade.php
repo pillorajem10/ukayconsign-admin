@@ -145,11 +145,10 @@
                             @if ($order->order_status === 'Delivered')  
                                 <!-- Display the proof of receive image if the order is delivered -->
                                 <div class="mt-4">
-                                    <h6><strong>Proof of Receive:</strong></h6>
-                                    {{--@if ($order->proof_of_receive)
+                                    @if ($order->proof_of_receive)
+                                        <h6><strong>Proof of Receive:</strong></h6>
                                         <img src="data:image/jpeg;base64,{{ $order->proof_of_receive }}" alt="Proof of Receive" class="proof-image">
-                                    @endif--}}
-                                    {{--<img src="data:image/jpeg;base64,{{ $order->proof_of_receive }}" alt="Proof of Receive" class="proof-image">--}}
+                                    @endif
                                 </div>
                             @endif
                         </div>
