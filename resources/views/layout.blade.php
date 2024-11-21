@@ -26,25 +26,14 @@
         .navbar {
             background: linear-gradient(90deg, #004d00, #007f00);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 1000;
         }
 
         .navbar-brand {
-            color: white !important; /* Changed to white */
+            color: white !important;
             font-weight: bold;
             font-size: 1.5rem;
-        }
-
-        .navbar-nav .nav-link {
-            color: white !important;
-            padding: 10px 15px;
-            transition: background-color 0.3s;
-            font-size: .7rem;
-            font-weight: bold
-        }
-
-        .navbar-nav .nav-link:hover {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
         }
 
         .navbar-toggler {
@@ -70,36 +59,50 @@
             transition: all 0.3s ease;
         }
 
-        .navbar-toggler.collapsed .bar1 {
-            transform: rotate(0);
-        }
-        .navbar-toggler.collapsed .bar2 {
-            opacity: 1;
-        }
-        .navbar-toggler.collapsed .bar3 {
-            transform: rotate(0);
-        }
-
-        .navbar-toggler:not(.collapsed) .bar1 {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-        .navbar-toggler:not(.collapsed) .bar2 {
-            opacity: 0;
-        }
-        .navbar-toggler:not(.collapsed) .bar3 {
-            transform: rotate(-45deg) translate(5px, -5px);
+        .drawer {
+            height: 100%;
+            width: 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: darkgreen;
+            overflow-x: hidden;
+            transition: 0.3s;
+            padding-top: 60px;
+            z-index: 999; /* Ensure it overlays content */
         }
 
-        .navbar-toggler:focus {
-            outline: none;
+        .drawer a {
+            padding: 8px 8px;
+            text-decoration: none;
+            font-size: 1rem;
+            color: white;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .drawer a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .drawer .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            font-size: 36px;
+            color: white;
+            background: transparent;
+            border: none;
         }
 
         .content {
-            min-height: calc(100% - 56px);
             padding: 20px;
             background: #ffffff;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
+            min-height: calc(100% - 56px);
+            position: relative;
+            z-index: 1; /* Make sure content is above drawer */
         }
 
         footer {
@@ -112,66 +115,64 @@
             width: 100%;
             margin-top: auto;
         }
+
+        .drawer-open {
+            width: 250px; /* Width of the drawer */
+        }
+
+        /* No shift of content when the drawer is open, just overlap */
+        .drawer-open ~ .content {
+            z-index: 1; /* Make sure content stays above drawer */
+        }
     </style>
     @yield('styles')
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg">
+    <!-- Navbar with hamburger icon -->
+    <nav class="navbar">
         <a class="navbar-brand" href="/">USC Admin</a>
-        <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" onclick="toggleDrawer()">
             <div class="navbar-toggler-icon">
-                <span class="bar1"></span>
-                <span class="bar2"></span>
-                <span class="bar3"></span>
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ml-auto">
-                @if (Auth::check()) <!-- Check if the user is logged in -->
-                    <li class="nav-item">
-                        <a class="nav-link" href="/dashboard">Dashboard</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/users">Users</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/orders">Transaction</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/received-products">Received Products</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/suppliers">Suppliers</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/stores">Stores</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/store-inventory">Store Inventory</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/usc-returns">Returned Items</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/billings">Billings</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/manual">Manual</a>
-                    </li>
-                @endif
-            </ul>
-        </div>
     </nav>
+
+    <!-- Drawer Menu -->
+    <div id="drawer" class="drawer">
+        <button class="close-btn" onclick="toggleDrawer()">&times;</button>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/users">Users</a>
+        <a href="/orders">Transaction</a>
+        <a href="/received-products">Received Products</a>
+        <a href="/suppliers">Suppliers</a>
+        <a href="/stores">Stores</a>
+        <a href="/store-inventory">Store Inventory</a>
+        <a href="/usc-returns">Returned Items</a>
+        <a href="/billings">Billings</a>
+        <a href="/manual">Manual</a>
+    </div>
+
+    <!-- Main Content -->
     <div class="content">
         @yield('content')
     </div>
 
+    <!-- Footer -->
     <footer>
         &copy; {{ date('Y') }} Ukay Supplier. All Rights Reserved.
     </footer>
 
+    <!-- JS Scripts -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function toggleDrawer() {
+            document.getElementById('drawer').classList.toggle('drawer-open');
+        }
+    </script>
 </body>
 </html>

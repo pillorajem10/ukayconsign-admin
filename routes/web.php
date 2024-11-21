@@ -15,6 +15,7 @@ use App\Http\Controllers\StoreInventoryController;
 use App\Http\Controllers\ProductBarcodesController;
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\ManualController;
+use App\Http\Controllers\PosController;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -116,3 +117,13 @@ Route::put('/billings/{id}/update-payment', [BillingController::class, 'updatePa
 
 // MANUAL
 Route::get('/manual', [ManualController::class, 'index'])->name('manual.index');
+
+// POS
+Route::match(['get', 'post'], '/pos', [PosController::class, 'index'])->name('pos.index');
+Route::post('/pos/void', [PosController::class, 'voidItem'])->name('pos.void');
+
+/*
+Route::post('/pos/sale', [PosController::class, 'completeSale'])->name('sales.store');
+Route::get('/pos/choose', [PosController::class, 'chooseStore'])->name('pos.choose');
+Route::post('/pos/apply-discount', [PosController::class, 'applyDiscount'])->name('pos.applyDiscount'); // Add this line
+*/

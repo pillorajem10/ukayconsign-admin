@@ -1,0 +1,78 @@
+/* Basic styling for the page container */
+.store-list-container {
+    padding: 20px;
+    background-color: #f9f9f9;
+}
+
+/* Store List title */
+.store-list-title {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+/* Table container styling */
+.table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Table styling */
+.store-table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+}
+
+/* Table header styling */
+.table-header {
+    font-size: 1rem;
+    padding: 10px;
+    background-color: #f1f1f1;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+/* Table row and cell styling */
+.table-row {
+    transition: background-color 0.3s ease;
+}
+
+.table-row:hover {
+    background-color: #f8f8f8;
+}
+
+.table-cell {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    font-size: 1rem;
+}
+
+/* Button styling */
+.btn-info {
+    padding: 8px 16px;
+    background-color: #5bc0de;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+}
+
+.btn-info:hover {
+    background-color: #31b0d5;
+}
+
+/* Media query for small screens (700px and below) */
+@media (max-width: 700px) {
+    .store-list-title {
+        font-size: 1.5rem; /* Reduce title size on small screens */
+    }
+
+    .table-header, .table-cell {
+        font-size: 0.7rem; /* Lower font size for the table on small screens */
+        padding: 8px; /* Reduce padding for the table */
+    }
+
+    .btn-info {
+        font-size: 0.7rem;
+        padding: 5px; /* Reduce button size */
+    }
+}
