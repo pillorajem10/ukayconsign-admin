@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Auth;
 
 use App\Mail\BadgePromotionMail;
 use Illuminate\Support\Facades\Mail;
-// use Illuminate\Support\Facades\Log;
 
 class PosController extends Controller
 {
@@ -51,18 +50,11 @@ class PosController extends Controller
             if ($selectedAction === 'pos') {
                 $barcode = ProductBarcode::where('barcode_number', $request->barcode_number)
                                          ->first();
-                if ($barcode) {
-                    if ($barcode->is_used) {
-                        return redirect()->route('pos.index')->with('error', 'Barcode has already been used.');
-                    }
-                    
-                    $barcode->is_used = true;
-                    $barcode->save(); // Save the updated barcode
-                } else {
+                if (!$barcode) {
                     return redirect()->route('pos.index')->with('error', 'Barcode not found.');
                 }
     
-                // Pass the barcode_number when calling addToPosCart
+                // No need to update `is_used` field anymore
                 $this->addToPosCart($productDetails, $request->barcode_number);
             }
         }
@@ -118,6 +110,8 @@ class PosController extends Controller
             $posCart->product_sku = $productDetails->SKU;
             $posCart->quantity = 1; // Start with a quantity of 1
             $posCart->date_added = now();
+            $posCart->price = $productDetails->SRP;
+            $posCart->consign = $productDetails->Consign;
             $posCart->product_bundle_id = $productDetails->ProductID;
     
             // Initialize barcode_numbers as an array with the first barcode number
@@ -146,14 +140,13 @@ class PosController extends Controller
                 ->with('error', 'Item not found in the cart.');
         }
     
-        // Loop through the barcode_numbers and set is_used to false for each barcode
+        // Loop through the barcode_numbers and do not modify `is_used`
         $barcodeNumbers = json_decode($posCartItem->barcode_numbers, true); // Decode the barcode_numbers array
         foreach ($barcodeNumbers as $barcodeNumber) {
             $barcode = ProductBarcode::where('barcode_number', $barcodeNumber)->first();
             
             if ($barcode) {
-                $barcode->is_used = false; // Set is_used to false
-                $barcode->save(); // Save the updated barcode
+                // No action needed for `is_used` here
             }
         }
     
@@ -168,35 +161,50 @@ class PosController extends Controller
     {
         // Retrieve all items from the PosReturnCart
         $posCarts = PosReturnCart::all();
-
+    
         if ($posCarts->isEmpty()) {
             return redirect()->route('pos.index')->with('error', 'No items to transfer.');
         }
-
+    
         foreach ($posCarts as $cart) {
             // Find or create the inventory item based on SKU
-            $storeInventory = StoreInventory::where('SKU', $cart->product_sku)->first();
-
+            $storeInventory = StoreInventory::where('SKU', $cart->product_sku)
+                                            ->where('store_id', 7)
+                                            ->first();
+    
+            // Decode the barcode numbers from PosReturnCart to ensure it is an array
+            $barcodeNumbers = is_string($cart->barcode_numbers) ? json_decode($cart->barcode_numbers, true) : $cart->barcode_numbers;
+    
             if ($storeInventory) {
                 // Update the stock for existing inventory
                 $storeInventory->Stocks += $cart->quantity;
+    
+                // Decode existing barcode numbers and ensure it's an array (handle null case)
+                $existingBarcodeNumbers = json_decode($storeInventory->barcode_numbers, true) ?? [];
+    
+                // Merge the new barcode numbers with the existing ones
+                $mergedBarcodeNumbers = array_merge($existingBarcodeNumbers, $barcodeNumbers);
+    
+                // Update the barcode numbers in the inventory
+                $storeInventory->barcode_numbers = json_encode($mergedBarcodeNumbers); // Save as a JSON string
                 $storeInventory->save();
             } else {
-                // Create a new inventory entry
+                // Create a new inventory entry if it doesn't exist
                 StoreInventory::create([
                     'SKU' => $cart->product_sku,
                     'ProductID' => $cart->product_bundle_id,
                     'Stocks' => $cart->quantity,
-                    'Consign' => 0, // Default value
-                    'SPR' => 0,     // Default value
+                    'Consign' => $cart->consign,
+                    'SPR' => $cart->price,
                     'store_id' => 7, // Set this based on your store logic
+                    'barcode_numbers' => json_encode($barcodeNumbers), // Save barcode numbers as JSON
                 ]);
             }
-
+    
             // Delete the item from the PosReturnCart
             $cart->delete();
         }
-
+    
         return redirect()->route('pos.index')->with('success', 'Transfer completed successfully.');
-    }
+    }       
 }

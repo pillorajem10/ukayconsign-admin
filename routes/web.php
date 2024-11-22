@@ -121,6 +121,7 @@ Route::get('/manual', [ManualController::class, 'index'])->name('manual.index');
 // POS
 Route::match(['get', 'post'], '/pos', [PosController::class, 'index'])->name('pos.index');
 Route::post('/pos/void', [PosController::class, 'voidItem'])->name('pos.void');
+Route::post('/pos/completetransfer', [PosController::class, 'completeTransfer'])->name('pos.completeTransfer');
 
 /*
 Route::post('/pos/sale', [PosController::class, 'completeSale'])->name('sales.store');

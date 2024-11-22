@@ -24,13 +24,18 @@ class PosReturnCart extends Model
         'quantity',
         'date_added',
         'product_bundle_id',
-        'user',
-        'prod_design',
-        'prod_brand',
+        'price',
+        'consign',  
+        'barcode_numbers',
     ];
 
     // The attributes that should be mutated to dates
-    protected $dates = ['date_added']; // Laravel will automatically cast this as a datetime
+    protected $casts = [
+        'date_added' => 'datetime',
+        'price' => 'decimal:2',
+        'consign' => 'decimal:2',
+        'barcode_numbers' => 'array', // Cast it to array if you're saving it as a JSON-like structure
+    ];
 
     // Disables timestamps if your table doesn't have `created_at` and `updated_at` columns
     public $timestamps = false;

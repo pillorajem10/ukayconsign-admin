@@ -29,7 +29,7 @@
         <form method="POST" action="{{ route('pos.index') }}" id="barcodeForm" onsubmit="updateSelectedAction()">
             @csrf
             <input type="hidden" name="action" id="actionInput" value="{{ $selectedAction }}">
-            <input type="text" name="barcode_number" placeholder="Enter Barcode Number" required class="form-input">
+            <input type="text" name="barcode_number" id="barcodeNumberField" placeholder="Enter Barcode Number" required class="form-input">
             <button type="submit" class="form-button">Get Barcode Details</button>
         </form>                           
 
@@ -96,11 +96,10 @@
                         @endforeach
                     </tbody>
                 </table>
-                <!-- Complete Transfer Button -->
-                {{--<form method="POST" action="{{ route('pos.completeTransfer') }}">
+                <form method="POST" action="{{ route('pos.completeTransfer') }}">
                     @csrf
-                    <button type="submit" class="form-button complete-button">Complete Transfer</button>
-                </form>--}}
+                    <button type="submit" class="form-button complete-button" onclick="return confirm('Are you sure you want to transfer these products? This action cannot be undone.')">Complete Transfer</button>
+                </form>
             @else
                 <p>No items in the cart.</p>
             @endif
@@ -108,7 +107,7 @@
             
         
         <script src="https://cdnjs.cloudflare.com/ajax/libs/quagga/0.12.1/quagga.min.js"></script>
-        <script src="{{ asset('js/pos.js?v=7.4') }}"></script>
+        <script src="{{ asset('js/pos.js?v=2.6') }}"></script>
         <script>
             // Pass PHP values to JavaScript variables
             const totalAmount = {{ json_encode($posCarts->sum('sub_total')) }};
@@ -117,5 +116,5 @@
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/pos.css?v=7.4') }}">
+    <link rel="stylesheet" href="{{ asset('css/pos.css?v=2.6') }}">
 @endsection

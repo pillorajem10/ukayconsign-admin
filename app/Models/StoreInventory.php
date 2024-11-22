@@ -23,6 +23,7 @@ class StoreInventory extends Model
         'Consign',
         'SPR',
         'store_id',
+        'barcode_numbers', // Add barcode_numbers to the fillable array
     ];
 
     // Define the relationship to Store
@@ -30,4 +31,9 @@ class StoreInventory extends Model
     {
         return $this->belongsTo(Store::class, 'store_id'); // Adjust 'store_id' if the foreign key is different
     }
+
+    // Cast 'barcode_numbers' as an array (if storing as JSON)
+    protected $casts = [
+        'barcode_numbers' => 'array', // Automatically cast barcode_numbers to an array
+    ];
 }
