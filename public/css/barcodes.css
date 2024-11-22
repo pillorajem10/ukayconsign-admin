@@ -55,6 +55,10 @@ body, html {
 }
 
 /* Printing specific styles */
+@page {
+    size: 60mm 30mm; /* Specify the page size (landscape by default due to dimensions) */
+}
+
 @media print {
     /* Print settings for the body */
     body, html {
@@ -65,16 +69,31 @@ body, html {
 
     /* Barcode container for printing */
     .barcode-container {
-        flex-direction: column;  /* Keep stacking vertically */
+        display: flex;
+        flex-direction: column;  /* Stack items horizontally for landscape */
         justify-content: flex-start;
+        flex-wrap: wrap; /* Allow wrapping if needed */
+        justify-content: center;
+        align-items: center;
+    }
+
+    .barcode-image {
+        width: 100rem;   /* Image will fit within label's width (60mm) */
+    }
+
+    .barcode-number {
+        font-size: 2rem;
     }
 
     /* Each barcode item - make sure it fits within 60mm x 40mm */
     .barcode-item {
-        width: 60mm;  /* Updated label width */
-        height: 40mm; /* Label height */
+        width: 60mm;  /* Label width */
+        height: 50mm; /* Label height */
         padding: 0;
         margin: 0;
+        margin-bottom: 5rem;
+        margin-top: 1rem;
+        margin-left: 3.5rem;
         border: none;  /* Optional, remove border during print */
     }
 
@@ -83,3 +102,4 @@ body, html {
         display: none;
     }
 }
+

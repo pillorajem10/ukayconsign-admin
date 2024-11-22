@@ -40,6 +40,7 @@
                             <option value="Exclusive">Exclusive</option>
                             <option value="Signature">Signature</option>
                             <option value="Essential">Essential</option>
+                            <option value="Smart Buy">Smart Buy</option>
                         </select>
                     </div>
                     {{--<div class="form-group">

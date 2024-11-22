@@ -110,16 +110,16 @@ class ReceivedProductController extends Controller
         }
     
         
-        $product = Product::where('SKU', $request->product_sku)->first();
+        // $product = Product::where('SKU', $request->product_sku)->first();
     
         // Check if the product exists
-        if (!$product) {
+        /*if (!$product) {
             return redirect()->back()->with('error', 'Product not found.');
-        }
+        }*/
     
         // Update the product stock
-        $product->Stock += $request->quantity_received;
-        $product->save();
+        /*$product->Stock += $request->quantity_received;
+        $product->save();*/
         
     
         // Create a new received product
@@ -137,27 +137,27 @@ class ReceivedProductController extends Controller
     
         // Update StoreInventory for store_id = 7
 
-        /*
-            $storeInventory = StoreInventory::where('SKU', $request->product_sku)
-                ->where('store_id', 7)
-                ->first();
         
-            // If the store inventory entry exists, update the stocks
-            if ($storeInventory) {
-                $storeInventory->Stocks += $request->quantity_received;
-                $storeInventory->save();
-            } else {
-                // Create a new StoreInventory entry with ProductID, Consign, and SPR from Product
-                StoreInventory::create([
-                    'SKU' => $request->product_sku,
-                    'ProductID' => $product->ProductID, // Assuming ProductID is a field in the Product model
-                    'Stocks' => $request->quantity_received,
-                    'Consign' => $product->Consign, // Use the Consign from the Product model
-                    'SPR' => $product->SRP, // Use the SRP from the Product model
-                    'store_id' => 7,
-                ]);
-            }
-        */
+        $storeInventory = StoreInventory::where('SKU', $request->product_sku)
+            ->where('store_id', 7)
+            ->first();
+    
+        // If the store inventory entry exists, update the stocks
+        if ($storeInventory) {
+            $storeInventory->Stocks += $request->quantity_received;
+            $storeInventory->save();
+        } else {
+            // Create a new StoreInventory entry with ProductID, Consign, and SPR from Product
+            StoreInventory::create([
+                'SKU' => $request->product_sku,
+                'ProductID' => $product->ProductID, // Assuming ProductID is a field in the Product model
+                'Stocks' => $request->quantity_received,
+                'Consign' => $product->Consign, // Use the Consign from the Product model
+                'SPR' => $product->SRP, // Use the SRP from the Product model
+                'store_id' => 7,
+            ]);
+        }
+        
     
         return redirect()->route('receivedProducts.index')->with('success', 'Product received successfully!');
     }
@@ -240,35 +240,35 @@ class ReceivedProductController extends Controller
         }
     
         // Find the corresponding StoreInventory for store_id = 7
-        /*
+        
         $storeInventory = StoreInventory::where('SKU', $receivedProduct->product_sku)
             ->where('store_id', 7)
             ->first();
-        */
+        
 
         
         $product = Product::where('SKU', $receivedProduct->product_sku)->first();
 
         // Deduct the received quantity from the product stock
-        if ($product) {
+        /*if ($product) {
             $product->Stock -= $receivedProduct->quantity_received;
             $product->save(); // Save the updated product
-        }
+        }*/
         
     
         // If the store inventory exists, decrease the Stocks
-        /*
-            if ($storeInventory) {
-                $storeInventory->Stocks -= $receivedProduct->quantity_received;
-        
-                // Ensure stocks do not go negative
-                if ($storeInventory->Stocks < 0) {
-                    $storeInventory->Stocks = 0;
-                }
-        
-                $storeInventory->save(); // Save the updated stock
+    
+        if ($storeInventory) {
+            $storeInventory->Stocks -= $receivedProduct->quantity_received;
+    
+            // Ensure stocks do not go negative
+            if ($storeInventory->Stocks < 0) {
+                $storeInventory->Stocks = 0;
             }
-        */
+    
+            $storeInventory->save(); // Save the updated stock
+        }
+    
     
         // Delete associated barcodes
         ProductBarcode::where('received_product_id', $receivedProduct->id)->delete();

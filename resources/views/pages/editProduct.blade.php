@@ -41,6 +41,7 @@
                             <option value="Exclusive" {{ $product->Category == 'Exclusive' ? 'selected' : '' }}>Exclusive</option>
                             <option value="Signature" {{ $product->Category == 'Signature' ? 'selected' : '' }}>Signature</option>
                             <option value="Essential" {{ $product->Category == 'Essential' ? 'selected' : '' }}>Essential</option>
+                            <option value="Smart Buy" {{ $product->Category == 'Smart Buy' ? 'selected' : '' }}>Smart Buy</option>
                         </select>
                     </div>
                 </div>

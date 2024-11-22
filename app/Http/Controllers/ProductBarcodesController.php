@@ -23,10 +23,10 @@ class ProductBarcodesController extends Controller
         // Show all if is_used is false, otherwise filter by product_sku
         if ($request->input('is_used') === 'false') {
             // Only apply received_product_id filter
-            $barcodes = $barcodesQuery->paginate(24);
+            $barcodes = $barcodesQuery->paginate(10);
         } else {
             // Filter by product_sku as well
-            $barcodes = $barcodesQuery->where('product_sku', $productSku)->paginate(24);
+            $barcodes = $barcodesQuery->where('product_sku', $productSku)->paginate(10);
         }
 
         // Check if any barcodes are found
