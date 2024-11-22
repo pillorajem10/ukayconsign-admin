@@ -292,5 +292,27 @@ class ProductController extends Controller
             'search' => session('search'), 
             'page' => session('page', 1)  // Default to page 1 if not found in the session
         ])->with('success', 'Product deleted successfully!');
-    }         
+    }  
+    
+    public function showInventoryPage(Request $request)
+    {
+        // Get the search query from the request
+        $search = $request->input('search');
+    
+        // Split the search string into words
+        $searchWords = $search ? explode(' ', $search) : [];
+    
+        // Fetch the ProductID and Stock for all products, apply the search if provided, and paginate with 10 items per page
+        $products = Product::select('ProductID', 'Stock')
+            ->when($searchWords, function ($query) use ($searchWords) {
+                foreach ($searchWords as $word) {
+                    // Add a condition to check if each word exists in the ProductID
+                    $query->where('ProductID', 'like', '%' . $word . '%');
+                }
+            })
+            ->paginate(10);
+    
+        // Pass the paginated products and search term to the view
+        return view('pages.inventoryPage', compact('products', 'search'));
+    }       
 }

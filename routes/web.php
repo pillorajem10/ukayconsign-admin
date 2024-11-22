@@ -44,6 +44,8 @@ Route::get('/products/delete/{product}', function() {
 Route::get('/products/update/{product}', function() {
     return redirect()->route('products.index')->with('error', 'Invalid request method. Please use the update action.');
 });
+Route::get('/products/inventory', [ProductController::class, 'showInventoryPage'])->name('products.showInventory');
+
 
 // ORDERS (transactions) ROUTES
 Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
