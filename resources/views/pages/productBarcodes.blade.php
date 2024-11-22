@@ -36,6 +36,6 @@
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/barcodes.css?v=2.7) }}">
+    <link rel="stylesheet" href="{{ asset('css/barcodes.css?v=2.7') }}">
 @endsection
 
