@@ -31,11 +31,11 @@
             </ul>
         </nav>
 
-        <script src="{{ asset('js/barcodes.js?v=3.0') }}"></script>
+        <script src="{{ asset('js/barcodes.js?v=2.7') }}"></script>
     </div>
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/barcodes.css?v=3.0') }}">
+    <link rel="stylesheet" href="{{ asset('css/barcodes.css?v=2.7) }}">
 @endsection
 
