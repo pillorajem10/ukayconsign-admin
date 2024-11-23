@@ -22,12 +22,12 @@ class ReceivedProductController extends Controller
         $this->middleware('auth'); // Require authentication for all methods in this controller
     }
     
-    public function index()
+    public function index(Request $request)
     {
-        // Fetch all received products, sorted by createdAt in descending order, with pagination
+        $currentPage = $request->get('page', 1);
+        session(['received_products_page' => $currentPage]); 
+
         $receivedProducts = ReceivedProduct::orderBy('createdAt', 'desc')->paginate(10);
-    
-        // Pass data to the view
         return view('pages.receivedProducts', compact('receivedProducts'));
     }       
 
@@ -205,7 +205,14 @@ class ReceivedProductController extends Controller
     
         // Generate barcodes
         for ($i = 0; $i < $receivedProduct->quantity_received; $i++) {
-            $barcodeNumber = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT); // Generate a random 6-digit number
+            // Generate a random barcode number
+            $barcodeNumber = str_pad(rand(0, 999999), 6, '0', STR_PAD_LEFT); // Random 6-digit number
+    
+            // Check if barcode already exists in the database
+            if (ProductBarcode::where('barcode_number', $barcodeNumber)->exists()) {
+                // If the barcode exists, return the error message and stop further processing
+                return redirect()->route('receivedProducts.index')->with('error', 'A barcode with this number already exists. Void the request and generate barcodes for this receive again');
+            }
     
             // Create barcode image using Picqer
             $barcodeGenerator = new \Picqer\Barcode\BarcodeGeneratorPNG();
@@ -219,11 +226,17 @@ class ReceivedProductController extends Controller
                 'received_product_id' => $receivedProduct->id, // Link to the received product
                 'batch_number' => $receivedProduct->batch_number,
                 'barcode_image' => $barcodeImage, // Save the binary image data directly
+                'product_retail_price' => $product->SRP, // Added: product retail price (SRP from Product model)
+                'bale_received' => $receivedProduct->bale, // Added: bale received from ReceivedProduct model
+                'supplier' => $receivedProduct->supplier, // Added: supplier from ReceivedProduct model
+                'barcode_location' => 'USC', // Added: default barcode location
             ]);
         }
     
         return redirect()->route('receivedProducts.index')->with('success', 'Barcodes generated successfully!');
     }
+    
+    
       
 
     /**

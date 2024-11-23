@@ -55,6 +55,7 @@
                         <tr>
                             <th>Product ID</th>
                             <th>Stocks</th>
+                            <th>Bale</th>
                             <th>Price</th>
                         </tr>
                     </thead>
@@ -62,7 +63,8 @@
                         <tr>
                             <td>{{ $productDetails->ProductID }}</td>
                             <td>{{ $productDetails->Stock }}</td>
-                            <td>₱{{ number_format($productDetails->SRP, 2) }}</td>
+                            <td>{{ $barcodeDetails->bale_received }}</td>
+                            <td>₱{{ number_format($barcodeDetails->product_retail_price, 2) }}</td>
                         </tr>
                     </tbody>
                 </table>

@@ -148,11 +148,13 @@
         <a href="/orders">Transaction</a>
         <a href="/received-products">Received Products</a>
         <a href="/suppliers">Suppliers</a>
+        <a href="/products/inventory">USC Inventory</a>
         <a href="/stores">Stores</a>
-        <a href="/store-inventory">Store Inventory</a>
+        <a href="/store-inventory">Stores Inventory</a>
         <a href="/usc-returns">Returned Items</a>
         <a href="/billings">Billings</a>
         <a href="/manual">Manual</a>
+        <a href="/pos">POS</a>
     </div>
 
     <!-- Main Content -->

@@ -78,7 +78,7 @@
             <ul class="pagination justify-content-center">
                 {{ $receivedProducts->appends(request()->query())->links('vendor.pagination.bootstrap-4') }}
             </ul>
-        </nav> 
+        </nav>        
     </div>
 </div>
 @endsection

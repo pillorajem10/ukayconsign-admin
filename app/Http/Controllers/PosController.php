@@ -25,6 +25,7 @@ class PosController extends Controller
     public function index(Request $request)
     {
         $productDetails = null;
+        $barcodeDetails = null;  // Initialize variable for barcode details
         $posCarts = null; // Initialize the variable for PosReturnCart list
         $selectedAction = $request->input('action', 'pos'); 
     
@@ -36,15 +37,16 @@ class PosController extends Controller
                 'barcode_number' => 'required|string',
             ]);
     
-            // Attempt to get product details based on the barcode (no store_id used)
+            // Attempt to get product details and barcode details based on the barcode
             $result = $this->getProductDetails($request->barcode_number); // Removed store_id from the method call
     
             if ($result['error']) {
                 return redirect()->route('pos.index')->with('error', $result['error']);
             }
     
-            // Extract product details from the result
+            // Extract product details and barcode details from the result
             $productDetails = $result['productDetails'];
+            $barcodeDetails = $result['barcodeDetails'];  // Get the barcode details
     
             // If the selected action is "POS", add the product to the PosReturnCart
             if ($selectedAction === 'pos') {
@@ -61,10 +63,10 @@ class PosController extends Controller
     
         // Retrieve all PosReturnCart list without any store_id filtering
         $posCarts = PosReturnCart::all(); // Now it fetches all PosReturnCart entries for all users
-        
-        return view('pages.pos', compact('productDetails', 'posCarts', 'selectedAction'));
+    
+        return view('pages.pos', compact('productDetails', 'barcodeDetails', 'posCarts', 'selectedAction'));
     }
-
+    
     private function getProductDetails($barcode)
     {
         // Search for the barcode number
@@ -78,16 +80,18 @@ class PosController extends Controller
         // Get the product using SKU from barcode
         $productDetails = Product::where('SKU', $barcodeDetails->product_sku)->first();
     
-        // If product found, return product details
+        // If product found, return product details and barcode details
         if ($productDetails) {
             return [
                 'error' => null,
                 'productDetails' => $productDetails,
+                'barcodeDetails' => $barcodeDetails, // Add barcodeDetails to the result
             ];
         }
     
         return ['error' => 'No items are detected on this barcode.'];
     }
+    
 
     private function addToPosCart($productDetails, $barcodeNumber)
     {
@@ -201,10 +205,22 @@ class PosController extends Controller
                 ]);
             }
     
-            // Delete the item from the PosReturnCart
+            // Now update the ProductBarcode model for each barcode number
+            foreach ($barcodeNumbers as $barcodeNumber) {
+                // Find the barcode entry
+                $productBarcode = ProductBarcode::where('barcode_number', $barcodeNumber)->first();
+    
+                if ($productBarcode) {
+                    // Update the barcode location
+                    $productBarcode->barcode_location = $storeInventory->store_id . ' - ' . $storeInventory->store->store_name;
+                    $productBarcode->save(); // Save the updated record
+                }
+            }
+    
+            // Delete the item from the PosReturnCart after transfer
             $cart->delete();
         }
     
         return redirect()->route('pos.index')->with('success', 'Transfer completed successfully.');
-    }       
+    }          
 }

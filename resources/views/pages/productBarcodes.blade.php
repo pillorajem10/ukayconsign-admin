@@ -5,7 +5,14 @@
 @section('content')
     <div class="container">
         <h1 class="text-center mb-4">Product Barcodes</h1>
+        
+        <!-- Print Button -->
         <button onclick="printBarcodes()" class="btn btn-primary mb-3 print-button">Print</button>
+
+        <!-- Back to Received Products Button -->
+        <a href="{{ route('receivedProducts.index') }}?page={{ session('received_products_page', 1) }}" class="btn btn-secondary mb-3">
+            Back to Received Products
+        </a>
 
         <!-- Barcode container for printing -->
         <div class="barcode-container" id="printableArea">
@@ -38,4 +45,3 @@
 @section('styles')
     <link rel="stylesheet" href="{{ asset('css/barcodes.css?v=2.7') }}">
 @endsection
-
