@@ -95,21 +95,28 @@ class PosController extends Controller
 
     private function addToPosCart($productDetails, $barcodeNumber)
     {
+        // Check if there's already a cart for the same product SKU
         $existingCart = PosReturnCart::where('product_sku', $productDetails->SKU)
             ->first();
     
         if ($existingCart) {
-            // If it exists, increment the quantity
-            $existingCart->quantity += 1; // Increment by 1
+            // Decode the existing barcode_numbers into an array
+            $barcodeNumbers = json_decode($existingCart->barcode_numbers, true); 
             
-            // Append the new barcode number to the barcode_numbers field
-            $barcodeNumbers = json_decode($existingCart->barcode_numbers, true); // Decode the existing barcode numbers into an array
-            $barcodeNumbers[] = $barcodeNumber; // Add the new barcode number
-            $existingCart->barcode_numbers = json_encode($barcodeNumbers); // Encode back into JSON and save
+            // Check if the barcode number is already in the barcode_numbers array
+            if (in_array($barcodeNumber, $barcodeNumbers)) {
+                // If barcode already exists, return an error
+                return redirect()->route('pos.index')->with('error', 'This barcode is already in the cart.');
+            }
     
+            // If not, increment the quantity and add the new barcode number
+            $existingCart->quantity += 1; // Increment by 1
+            $barcodeNumbers[] = $barcodeNumber; // Add the new barcode number
+            $existingCart->barcode_numbers = json_encode($barcodeNumbers); // Update the barcode numbers
+            
             $existingCart->save(); // Save the updated cart
         } else {
-            // If it doesn't exist, create a new PosReturnCart entry
+            // If no existing cart for this product, create a new PosReturnCart entry
             $posCart = new PosReturnCart();
             $posCart->product_sku = $productDetails->SKU;
             $posCart->quantity = 1; // Start with a quantity of 1
@@ -117,13 +124,14 @@ class PosController extends Controller
             $posCart->price = $productDetails->SRP;
             $posCart->consign = $productDetails->Consign;
             $posCart->product_bundle_id = $productDetails->ProductID;
-    
+            
             // Initialize barcode_numbers as an array with the first barcode number
             $posCart->barcode_numbers = json_encode([$barcodeNumber]);
-    
+            
             $posCart->save(); // Save the new cart entry
         }
     }
+    
 
     public function voidItem(Request $request)
     {
@@ -171,6 +179,23 @@ class PosController extends Controller
         }
     
         foreach ($posCarts as $cart) {
+            // Check if the quantity to transfer is greater than the available stock in the Product model
+            $product = Product::where('SKU', $cart->product_sku)->first();
+            
+            if ($product) {
+                if ($cart->quantity > $product->Stock) {
+                    // Not enough stock to transfer
+                    return redirect()->route('pos.index')->with('error', 'Not enough stock available to transfer this item.');
+                }
+            } else {
+                // If no product is found, handle the case (you could throw an exception or log an error)
+                return redirect()->route('pos.index')->with('error', "Product with SKU {$cart->product_sku} not found.");
+            }
+    
+            // First, update the Product model's stock (deduct from the Product model)
+            $product->Stock -= $cart->quantity;
+            $product->save();
+    
             // Find or create the inventory item based on SKU
             $storeInventory = StoreInventory::where('SKU', $cart->product_sku)
                                             ->where('store_id', 7)
@@ -180,7 +205,7 @@ class PosController extends Controller
             $barcodeNumbers = is_string($cart->barcode_numbers) ? json_decode($cart->barcode_numbers, true) : $cart->barcode_numbers;
     
             if ($storeInventory) {
-                // Update the stock for existing inventory
+                // Update the stock for existing inventory after deducting from the product stock
                 $storeInventory->Stocks += $cart->quantity;
     
                 // Decode existing barcode numbers and ensure it's an array (handle null case)
@@ -192,6 +217,7 @@ class PosController extends Controller
                 // Update the barcode numbers in the inventory
                 $storeInventory->barcode_numbers = json_encode($mergedBarcodeNumbers); // Save as a JSON string
                 $storeInventory->save();
+    
             } else {
                 // Create a new inventory entry if it doesn't exist
                 StoreInventory::create([
@@ -222,5 +248,5 @@ class PosController extends Controller
         }
     
         return redirect()->route('pos.index')->with('success', 'Transfer completed successfully.');
-    }          
+    }                  
 }

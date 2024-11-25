@@ -4,7 +4,7 @@
 
 @section('content')
     <div>
-        <h1 class="page-title">Return to store</h1>
+        <h1 class="page-title">Admin POS</h1>
         
         @if(session('error'))
             <div id="error-message" class="alert alert-danger">
@@ -21,7 +21,7 @@
         <div class="action-select">
             <label for="actionSelect">Select Action:</label>
             <select id="actionSelect" name="action" onchange="updateSelectedAction()">
-                <option value="price-check" {{ $selectedAction === 'price-check' ? 'selected' : '' }}>Price Check</option>
+                <option value="price-check" {{ $selectedAction === 'price-check' ? 'selected' : '' }}>Track Barcode</option>
                 <option value="pos" {{ $selectedAction === 'pos' ? 'selected' : '' }}>Return to store</option>
             </select>                       
         </div>        
@@ -49,21 +49,23 @@
 
         <div id="productDetails" style="{{ $selectedAction === 'pos' ? 'display: none;' : '' }}">
             @if(isset($productDetails) && $productDetails)
-                <h2 class="inventory-title">Product Details</h2>
+                <h2 class="inventory-title">Barcode Tracker</h2>
                 <table class="styled-table">
                     <thead>
                         <tr>
+                            <th>Barcode Number</th>
                             <th>Product ID</th>
-                            <th>Stocks</th>
                             <th>Bale</th>
-                            <th>Price</th>
+                            <th>Barcode Location</th>
+                            <th>SRP</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
+                            <td>{{ $barcodeDetails->barcode_number }}</td>
                             <td>{{ $productDetails->ProductID }}</td>
-                            <td>{{ $productDetails->Stock }}</td>
                             <td>{{ $barcodeDetails->bale_received }}</td>
+                            <td>{{ $barcodeDetails->barcode_location }}</td>
                             <td>₱{{ number_format($barcodeDetails->product_retail_price, 2) }}</td>
                         </tr>
                     </tbody>

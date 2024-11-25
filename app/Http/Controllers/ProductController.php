@@ -231,9 +231,12 @@ class ProductController extends Controller
             'Secondary_Img' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
             'details_images.*' => 'nullable|file|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-    
+        
         // Find the product by SKU
         $product = Product::findOrFail($id);
+        
+        // Store the original SRP before updating
+        $originalSRP = $product->SRP;
     
         // Update product fields
         $product->fill($validatedData);
@@ -259,6 +262,16 @@ class ProductController extends Controller
         // Save the updated product
         $product->save();
     
+        // If the SRP has changed, update the corresponding ProductBarcode records
+        if ($product->SRP !== $originalSRP) {
+            $productBarcodes = ProductBarcode::where('product_sku', $id)->get();
+            
+            foreach ($productBarcodes as $barcode) {
+                $barcode->product_retail_price = $product->SRP; // Update retail price to the new SRP
+                $barcode->save(); // Save the updated barcode
+            }
+        }
+    
         // After updating the product, we redirect back to the product list
         // and append the search term and page from the session to the URL
         return redirect()->route('products.index', [
@@ -266,6 +279,7 @@ class ProductController extends Controller
             'page' => session('page', 1)  // Default to page 1 if not found in the session
         ])->with('success', 'Product updated successfully!');
     }
+    
     
     
         

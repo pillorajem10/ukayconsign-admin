@@ -16,6 +16,8 @@ use App\Http\Controllers\ProductBarcodesController;
 use App\Http\Controllers\BillingController;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\PosController;
+use App\Http\Controllers\PosSaleController;
+
 
 use Illuminate\Support\Facades\Auth;
 
@@ -125,8 +127,9 @@ Route::match(['get', 'post'], '/pos', [PosController::class, 'index'])->name('po
 Route::post('/pos/void', [PosController::class, 'voidItem'])->name('pos.void');
 Route::post('/pos/completetransfer', [PosController::class, 'completeTransfer'])->name('pos.completeTransfer');
 
-/*
-Route::post('/pos/sale', [PosController::class, 'completeSale'])->name('sales.store');
-Route::get('/pos/choose', [PosController::class, 'chooseStore'])->name('pos.choose');
-Route::post('/pos/apply-discount', [PosController::class, 'applyDiscount'])->name('pos.applyDiscount'); // Add this line
-*/
+// POS SALE
+Route::match(['get', 'post'], '/posSale', [PosSaleController::class, 'index'])->name('posSale.index');
+Route::post('/posSale/sale', [PosSaleController::class, 'completeSale'])->name('sales.store');
+// Route::get('/posSale/choose', [PosSaleController::class, 'chooseStore'])->name('posSale.choose');
+Route::post('/posSale/void', [PosSaleController::class, 'voidItem'])->name('posSale.void');
+Route::post('/posSale/apply-discount', [PosSaleController::class, 'applyDiscount'])->name('posSale.applyDiscount'); // Add this line
