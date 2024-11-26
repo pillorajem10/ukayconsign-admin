@@ -70,9 +70,27 @@
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this product? This action cannot be undone.')">Delete</button>
                             </form>
+                        
                             <a href="{{ route('receivedProducts.create', ['product_sku' => $product->SKU]) }}" class="btn btn-secondary">Receive Product</a>
                             <a href="{{ route('products.edit', $product->SKU) }}" class="btn btn-warning">Update</a>
-                        </td>                                                                                    
+                        
+                            <!-- Hide/Unhide Button -->
+                            @if($product->is_hidden)
+                                <!-- If product is hidden, show the Unhide button -->
+                                <form action="{{ route('products.unhide', $product->SKU) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-info">Unhide</button>
+                                </form>
+                            @else
+                                <!-- If product is not hidden, show the Hide button -->
+                                <form action="{{ route('products.hide', $product->SKU) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('PATCH')
+                                    <button type="submit" class="btn btn-secondary">Hide Product</button>
+                                </form>
+                            @endif
+                        </td>                                                                                                          
                     </tr>
                 @endforeach
             </tbody>

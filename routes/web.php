@@ -17,6 +17,9 @@ use App\Http\Controllers\BillingController;
 use App\Http\Controllers\ManualController;
 use App\Http\Controllers\PosController;
 use App\Http\Controllers\PosSaleController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\TallyController;
+use App\Http\Controllers\SaleBreakdownController;
 
 
 use Illuminate\Support\Facades\Auth;
@@ -39,6 +42,9 @@ Route::post('/products', [ProductController::class, 'store'])->name('products.st
 Route::delete('/products/delete/{product:SKU}', [ProductController::class, 'destroy'])->name('products.destroy');
 Route::get('/products/edit/{product:SKU}', [ProductController::class, 'edit'])->name('products.edit');
 Route::put('/products/update/{product:SKU}', [ProductController::class, 'update'])->name('products.update');
+Route::patch('/products/{product:SKU}/hide', [ProductController::class, 'hide'])->name('products.hide');
+Route::patch('/products/{product:SKU}/unhide', [ProductController::class, 'unhide'])->name('products.unhide');
+
 // Add this route for invalid GET requests
 Route::get('/products/delete/{product}', function() {
     return redirect()->route('products.index')->with('error', 'Invalid request method. Please use the delete action.');
@@ -102,9 +108,12 @@ Route::get('/store-inventory', [StoreInventoryController::class, 'index'])->name
 Route::get('/product-barcodes', [ProductBarcodesController::class, 'index'])->name('product-barcodes.index');
 
 // DASHBOARD
+/*
 Route::get('/dashboard', function () {
     return view('pages.dashboard'); // Points to your dashboard view
-})->middleware('auth'); // Ensures the user is authenticated
+})->middleware('auth'); // Ensures the user is authenticated*/
+
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
 // RETURN REQUEST
 Route::get('/usc-returns', [UscReturnController::class, 'index'])->name('usc-returns.index');
@@ -133,3 +142,9 @@ Route::post('/posSale/sale', [PosSaleController::class, 'completeSale'])->name('
 // Route::get('/posSale/choose', [PosSaleController::class, 'chooseStore'])->name('posSale.choose');
 Route::post('/posSale/void', [PosSaleController::class, 'voidItem'])->name('posSale.void');
 Route::post('/posSale/apply-discount', [PosSaleController::class, 'applyDiscount'])->name('posSale.applyDiscount'); // Add this line
+
+// TALLIES
+Route::get('/tallies', [TallyController::class, 'index'])->name('tallies.index');
+
+// SALE BREAKDOWN
+Route::get('/sale-breakdown', [SaleBreakdownController::class, 'index'])->name('saleBreakdown.index');

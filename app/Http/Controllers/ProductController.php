@@ -307,6 +307,32 @@ class ProductController extends Controller
             'page' => session('page', 1)  // Default to page 1 if not found in the session
         ])->with('success', 'Product deleted successfully!');
     }  
+
+
+
+
+    public function hide(Product $product)
+    {
+        // Set the product's `is_hidden` to true
+        $product->is_hidden = true;
+        $product->save();
+
+        return redirect()->back()->with('success', 'Product has been hidden.');
+    }
+
+    // Unhide a product
+    public function unhide(Product $product)
+    {
+        // Set the product's `is_hidden` to false
+        $product->is_hidden = false;
+        $product->save();
+
+        return redirect()->back()->with('success', 'Product has been unhidden.');
+    }
+
+
+
+
     
     public function showInventoryPage(Request $request)
     {
