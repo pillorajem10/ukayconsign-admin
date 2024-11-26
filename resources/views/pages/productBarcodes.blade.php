@@ -38,10 +38,10 @@
             </ul>
         </nav>
 
-        <script src="{{ asset('js/barcodes.js?v=2.7') }}"></script>
+        <script src="{{ asset('js/barcodes.js?v=2.8') }}"></script>
     </div>
 @endsection
 
 @section('styles')
-    <link rel="stylesheet" href="{{ asset('css/barcodes.css?v=2.7') }}">
+    <link rel="stylesheet" href="{{ asset('css/barcodes.css?v=2.8') }}">
 @endsection
