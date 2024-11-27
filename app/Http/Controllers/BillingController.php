@@ -18,14 +18,31 @@ class BillingController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Retrieve all billing records (no user restriction for pages)
-        $billings = Billing::all(); // pages can see all billings
-
+        // Start with the base query for billings, filtered by user role "user"
+        $query = Billing::whereHas('user', function ($query) {
+            $query->where('role', 'user'); // Assuming there's a 'role' column in the 'users' table
+        });
+    
+        // Apply date range filter if dates are provided in the request
+        if ($request->has('start_date') && $request->has('end_date')) {
+            // Parse the start and end date to Carbon instances
+            $startDate = \Carbon\Carbon::parse($request->start_date)->startOfDay();
+            $endDate = \Carbon\Carbon::parse($request->end_date)->endOfDay();
+    
+            // Apply the date range filter to the query
+            $query->whereBetween('bill_issued', [$startDate, $endDate]);
+        }
+    
+        // Order the results by created_at and paginate the results with 10 records per page
+        $billings = $query->orderBy('created_at', 'desc')->paginate(10);
+    
         // Return the view and pass the $billings data to the Blade template
         return view('pages.billingList', compact('billings'));
     }
+    
+      
 
     /**
      * Display the breakdown of a specific billing.

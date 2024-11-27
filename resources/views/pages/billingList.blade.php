@@ -1,6 +1,6 @@
-@extends('layout') <!-- Extending the main layout file -->
+@extends('layout')
 
-@section('title', 'Billing') <!-- Setting the title for this page -->
+@section('title', 'Billing')
 
 @section('content')
     @if(session('success'))
@@ -18,7 +18,23 @@
 
         <div class="back-to-dashboard mb">
             <a href="{{ route('products.index') }}" class="btn btn-secondary">Back To Home</a>
+            <a href="{{ route('billings.index') }}" class="btn btn-secondary">Clear Filter</a>
         </div>
+
+        <!-- Date Range Filter Form -->
+        <form method="GET" action="{{ route('billings.index') }}" class="date-filter-form mb-4 mt-4">
+            <div class="form-row">
+                <div class="col-md-5">
+                    <input type="date" name="start_date" class="form-control mb-4" value="{{ request('start_date') }}" placeholder="Start Date">
+                </div>
+                <div class="col-md-5">
+                    <input type="date" name="end_date" class="form-control mb-4" value="{{ request('end_date') }}" placeholder="End Date">
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Filter</button>
+                </div>
+            </div>
+        </form>
 
         @if($billings->isEmpty())
             <p class="no-records">No billing records found.</p>
@@ -29,9 +45,10 @@
                         <tr>
                             <th>ID</th>
                             <th>Total Bill</th>
+                            <th>Issued To</th>
                             <th>Status</th>
                             <th>Issued On</th>
-                            <th>Action</th> <!-- Added a column for the action -->
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -39,10 +56,12 @@
                             <tr>
                                 <td>{{ $billing->id }}</td>
                                 <td>₱{{ number_format($billing->total_bill, 2) }}</td>
+                                <td>
+                                    {{ $billing->user->fname ? $billing->user->fname . ' ' . $billing->user->lname : $billing->user->email }}
+                                </td>
                                 <td>{{ $billing->status }}</td>
                                 <td>{{ \Carbon\Carbon::parse($billing->bill_issued)->format('M. d, Y') }}</td>
                                 <td>
-                                    <!-- "View Breakdown" button which links to the 'show' route -->
                                     <div class="action-btns">
                                         <a href="{{ route('billings.show', $billing->id) }}" class="action-btn">View Breakdown</a>
                                     </div>
@@ -52,6 +71,12 @@
                     </tbody>
                 </table>
             </div>
+
+            <nav aria-label="Page navigation">
+                <ul class="pagination justify-content-center">
+                    {{ $billings->appends(['start_date' => request('start_date'), 'end_date' => request('end_date')])->links('vendor.pagination.bootstrap-4') }}
+                </ul>
+            </nav>
         @endif
     </div>
 @endsection

@@ -12,6 +12,10 @@
         
         <div class="billing-info">
             <p><strong>Issued On:</strong> {{ $billing->bill_issued }}</p>
+            <p>
+                <strong>Issued To:</strong> 
+                {{ $billing->user->fname ? $billing->user->fname . ' ' . $billing->user->lname : $billing->user->email }}
+            </p>
             <p><strong>Sale Date Range:</strong> {{ $billing->sales_date_range }}</p>
             <p><strong>Status:</strong> {{ $billing->status }}</p>
             <p><strong>Total Bill:</strong> ₱{{ number_format($billing->total_bill, 2) }}</p>
