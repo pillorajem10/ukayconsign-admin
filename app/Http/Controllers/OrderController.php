@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Product;
 use App\Models\StoreInventory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+
 
 use App\Mail\AdminOrderStatus;
 use App\Mail\AdminNotificationsForOrderStatus;
@@ -227,5 +229,88 @@ class OrderController extends Controller
         // Redirect back to the orders list page with a success message
         return redirect()->route('orders.index')->with('success', 'Order Quantity Updated Successfully!');
     }
-         
+        
+    
+
+    public function applyDiscount(Request $request, $id)
+    {
+        // Validate the inputs
+        $request->validate([
+            'discount' => 'required|numeric|min:0',
+            'cart_id' => 'required|integer',
+        ]);
+    
+        // Find the order by its ID
+        $order = Order::findOrFail($id);
+    
+        // Decode the products from JSON
+        $products = json_decode($order->products_ordered, true);
+    
+        // Log the initial state of the order and products
+        Log::info('Applying discount to order', [
+            'order_id' => $id,
+            'original_total_price' => $order->total_price,
+            'products' => $products,
+            'discount_amount' => $request->input('discount'),
+        ]);
+    
+        // Get the discount and cart_id from the form
+        $discountAmount = $request->input('discount');
+        $cartId = $request->input('cart_id');
+    
+        // Find the product by cart_id and apply discount
+        foreach ($products as &$product) {
+            if ($product['cart_id'] == $cartId) {
+                // Log the product details before applying the discount
+                Log::info('Applying discount to product', [
+                    'product_id' => $product['cart_id'],
+                    'original_price' => $product['price'],
+                    'original_quantity' => $product['quantity'],
+                    'total_price_before_discount' => $product['price'] * $product['quantity'],
+                ]);
+    
+                // Apply the discount to the total price (quantity * price - discount)
+                $totalPriceBeforeDiscount = $product['price'] * $product['quantity'];  // Quantity * Price
+                $totalPriceAfterDiscount = $totalPriceBeforeDiscount - $discountAmount;  // Apply discount once
+    
+                // Save the discount and the updated total price after discount
+                $product['discount'] = $discountAmount;
+                $product['total_price_after_discount'] = $totalPriceAfterDiscount;
+    
+                // Log the product details after applying the discount
+                Log::info('Discount applied to product', [
+                    'product_id' => $product['cart_id'],
+                    'total_price_after_discount' => $product['total_price_after_discount'],
+                ]);
+    
+                break;
+            }
+        }
+    
+        // Recalculate the total price of the order (sum of all product subtotals)
+        $order->total_price = array_reduce($products, function ($carry, $prod) {
+            $totalProductPrice = $prod['price'] * $prod['quantity'];  // Quantity * Price
+            $productDiscount = $prod['discount'] ?? 0;  // Get any discount applied to the product
+            return $carry + $totalProductPrice - $productDiscount;  // Subtract discount from product price
+        }, 0);
+    
+        // Log the new order total after discount
+        Log::info('New order total after discount', [
+            'new_total_price' => $order->total_price,
+        ]);
+    
+        // Save the updated products and order total
+        $order->products_ordered = json_encode($products);
+        $order->save();
+    
+        // Log the successful application of the discount
+        Log::info('Discount applied successfully to order', [
+            'order_id' => $id,
+            'new_order_total_price' => $order->total_price,
+        ]);
+    
+        // Redirect with success message
+        return redirect()->route('orders.index', $id)->with('success', 'Discount applied successfully.');
+    }
+           
 }

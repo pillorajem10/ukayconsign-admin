@@ -60,7 +60,7 @@ Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
 Route::patch('/orders/{id}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 Route::post('/orders/{id}/uploadproof', [OrderController::class, 'uploadProofOfReceive'])->name('orders.uploadProofOfReceive');
 Route::post('/orders/update-quantity', [OrderController::class, 'updateQuantity'])->name('orders.updateQuantity');
-
+Route::patch('/orders/{id}/applydiscount', [OrderController::class, 'applyDiscount'])->name('orders.applydiscount');
 
 
 // RECEIVED PRODUCTS

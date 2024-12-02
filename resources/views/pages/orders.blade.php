@@ -52,6 +52,8 @@
                                         <th>Category</th>
                                         <th>Quantity</th>
                                         <th>Price</th>
+                                        <th>Discount</th> <!-- Added Discount column -->
+                                        <th>Sub Total</th> <!-- Added Sub Total column -->
                                         <th>Action</th> <!-- Add an Action column for Edit and Save -->
                                     </tr>
                                 </thead>
@@ -60,8 +62,13 @@
                                         $products = json_decode($order->products_ordered, true);
                                     @endphp
                                     @foreach ($products as $product)
+                                        @php
+                                            // Get the discount (if any) applied to the product
+                                            $discount = isset($product['discount']) ? $product['discount'] : 0;
+                                            // Calculate Sub Total after Discount: (quantity * price) - discount
+                                            $subTotal = ($product['price'] * $product['quantity']) - $discount;
+                                        @endphp
                                         <tr id="product-row-{{ $product['cart_id'] }}">
-                                            <!-- Pass order_id and cart_id -->
                                             <td class="d-none">{{ $product['cart_id'] }}</td>
                                             <td>{{ $product['bundle_name'] }}</td>
                                             <td>{{ $product['category'] }}</td>
@@ -70,6 +77,27 @@
                                                 <input type="number" id="quantity-input-{{ $order->id }}-{{ $product['cart_id'] }}" value="{{ $product['quantity'] }}" class="form-control" style="display: none;">
                                             </td>                                            
                                             <td>₱{{ number_format($product['price'], 2) }}</td>
+                            
+                                            <!-- Display Discount per Product -->
+                                            <td>
+                                                <form action="{{ route('orders.applydiscount', $order->id) }}" method="POST">
+                                                    @csrf
+                                                    @method('PATCH')
+                                                    
+                                                    <input type="hidden" name="cart_id" value="{{ $product['cart_id'] }}"> <!-- Pass the cart_id -->
+                                                    
+                                                    <div class="input-group mb-3">
+                                                        <input type="number" name="discount" class="form-control" placeholder="Enter discount" min="0" step="0.01" value="{{ number_format($discount, 2) }}" required> <!-- Pre-fill the discount if any -->
+                                                        <div class="input-group-append">
+                                                            <button type="submit" class="btn btn-success">Apply</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </td>
+                            
+                                            <!-- Display Sub Total after Discount -->
+                                            <td>₱{{ number_format($subTotal, 2) }}</td>
+                            
                                             <td>
                                                 <div class="actions-products-ordered">
                                                     <button class="btn btn-sm btn-primary" onclick="editQuantity({{ $loop->index }}, {{ $order->id }}, '{{ $product['cart_id'] }}')" id="edit-button-{{ $order->id }}-{{ $product['cart_id'] }}">Edit</button>
@@ -80,7 +108,12 @@
                                         </tr>
                                     @endforeach
                                 </tbody>
-                            </table>                                                                                                             
+                            </table>
+                            
+                            
+                            
+                            
+
                             <p class="mt-3"><strong>Total Price:</strong> ₱{{ number_format($order->total_price, 2) }}</p>
                             <p><strong>Order Date:</strong> {{ Carbon::parse($order->createdAt)->format('F j, Y, g:i A') }}</p>
                             <p><strong>User Estimated Items Sold Per Month:</strong> {{ $order->user ? $order->user->estimated_items_sold_per_month : 'N/A' }}</p>
