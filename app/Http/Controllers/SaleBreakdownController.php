@@ -3,9 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sale;
-use Illuminate\Http\Request;
 use App\Models\Store;
+use App\Models\Product;
+use App\Models\ReceivedProduct;
+
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 
 class SaleBreakdownController extends Controller
 {
@@ -80,5 +84,49 @@ class SaleBreakdownController extends Controller
             'filter' => $filter,
             'store_id' => $store_id,
         ]);
-    }      
+    }    
+    
+    public function qtySoldItems()
+    {
+        // Retrieve all products
+        $products = Product::all();
+    
+        // Retrieve all stores
+        $stores = Store::all();
+    
+        // Initialize an array to store the aggregated data
+        $data = [];
+    
+        foreach ($products as $product) {
+            // Get the highest cost for the current product SKU from the ReceivedProduct table
+            $highestCost = ReceivedProduct::where('product_sku', $product->SKU)->max('cost');
+    
+            $row = [
+                'product_name' => $product->ProductID,
+                'consign' => $product->Consign, // Assuming 'Consign' is a property in your Product model
+                'highest_cost' => $highestCost ?? 0, // Default to 0 if no cost data is available
+            ];
+    
+            foreach ($stores as $store) {
+                // Calculate the total quantity of this product sold in this store
+                $quantitySold = Sale::where('sale_made', $store->id)
+                    ->get()
+                    ->flatMap(function ($sale) {
+                        return json_decode($sale->ordered_items, true);
+                    })
+                    ->filter(function ($item) use ($product) {
+                        return $item['product_sku'] === $product->SKU;
+                    })
+                    ->sum('quantity');
+    
+                // Store the quantity in the array
+                $row[$store->store_name] = $quantitySold ?? 0; // Default to 0 if no data
+            }
+    
+            $data[] = $row;
+        }
+    
+        return view('pages.qtySold', compact('data', 'stores'));
+    }
+      
 }

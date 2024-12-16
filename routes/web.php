@@ -148,3 +148,4 @@ Route::get('/tallies', [TallyController::class, 'index'])->name('tallies.index')
 
 // SALE BREAKDOWN
 Route::get('/sale-breakdown', [SaleBreakdownController::class, 'index'])->name('saleBreakdown.index');
+Route::get('/qty-sold-items', [SaleBreakdownController::class, 'qtySoldItems'])->name('qtySoldItems');
