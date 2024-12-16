@@ -27,6 +27,13 @@
                         @endforeach
                     </tr>
                 @endforeach
+                <!-- Totals row -->
+                <tr>
+                    <td colspan="3"><strong>Total Sold Items</strong></td>
+                    @foreach($stores as $store)
+                        <td><strong>{{ $totals[$store->store_name] }}</strong></td>
+                    @endforeach
+                </tr>
             </tbody>
         </table>
     </div>

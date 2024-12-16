@@ -96,6 +96,7 @@ class SaleBreakdownController extends Controller
     
         // Initialize an array to store the aggregated data
         $data = [];
+        $totals = []; // Array to store totals for each store
     
         foreach ($products as $product) {
             // Get the highest cost for the current product SKU from the ReceivedProduct table
@@ -121,12 +122,15 @@ class SaleBreakdownController extends Controller
     
                 // Store the quantity in the array
                 $row[$store->store_name] = $quantitySold ?? 0; // Default to 0 if no data
+    
+                // Add to the store's total
+                $totals[$store->store_name] = ($totals[$store->store_name] ?? 0) + $quantitySold;
             }
     
             $data[] = $row;
         }
     
-        return view('pages.qtySold', compact('data', 'stores'));
+        return view('pages.qtySold', compact('data', 'stores', 'totals'));
     }
-      
+    
 }
